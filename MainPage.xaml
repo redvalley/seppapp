@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TalkingSepp.MainPage"
+             >
+    <Grid RowDefinitions="*, Auto" ColumnDefinitions="*">
+        <Image x:Name="BackgroundImage" Grid.RowSpan="2"  Source="background_wiese.png" Aspect="Fill"></Image>
+        
+        
+        <Label Grid.Row="1" TextColor="White" x:Name="RecognizedText" />
+
+        <HorizontalStackLayout VerticalOptions="Start" HorizontalOptions="Start" Margin="5">
+            <Border  HeightRequest="80"
+                     WidthRequest="80"
+                     BackgroundColor="#604F3F"
+                     Margin="5"
+            >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="25" />
+                </Border.StrokeShape>
+                <ImageButton Source="icon_essen_leberkaese_semmel" Clicked="Leberkaese_Clicked" />
+            </Border>
+            <Border  HeightRequest="80"
+                     WidthRequest="80"
+                     BackgroundColor="#604F3F"
+                     Margin="5"
+            >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="25" />
+                </Border.StrokeShape>
+                <ImageButton Source="icon_essen_weisswurst_mit_ketchup" Clicked="WeisswurstMitKetchup_Clicked" />
+            </Border>
+            <Border  HeightRequest="80"
+                     WidthRequest="80"
+                     BackgroundColor="#604F3F"
+                     Margin="5"
+            >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="25" />
+                </Border.StrokeShape>
+                <ImageButton Source="icon_drink_limo" Clicked="Limo_OnClicked" />
+            </Border>
+
+        </HorizontalStackLayout>
+
+       
+        <Image x:Name="CharacterHeart" Source="heart_transparent" HeightRequest="50" HorizontalOptions="End" VerticalOptions="Start" Margin="20" ></Image>
+        <VerticalStackLayout VerticalOptions="Start" 
+                             HorizontalOptions="Start" 
+                             BackgroundColor="Transparent"
+                             WidthRequest="100"
+                             Margin="5, 100"
+                             >
+
+            <Border  HeightRequest="80"
+                     WidthRequest="80"
+                     BackgroundColor="#604F3F"
+                     Margin="5"
+            >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="25" />
+                </Border.StrokeShape>
+                <ImageButton Source="icon_talk" HeightRequest="80" Clicked="TalkToSepp_OnClicked" />
+            </Border>
+
+            <Border  HeightRequest="80"
+                     WidthRequest="80"
+                     BackgroundColor="#604F3F"
+                     Margin="5"
+                     x:Name="VolksfestButtonBorder"
+            >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="25" />
+                </Border.StrokeShape>
+                <ImageButton Source="icon_volksfest" HeightRequest="80" Clicked="VolksfestButton_OnClicked" />
+            </Border>
+
+            <Border  HeightRequest="80"
+                     WidthRequest="80"
+                     BackgroundColor="#604F3F"
+                     Margin="5"
+                     x:Name="MaibaumButtonBorder"
+            >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="25" />
+                </Border.StrokeShape>
+                <ImageButton Source="icon_maibaum" HeightRequest="80" Clicked="MaibaumButton_OnClicked" />
+            </Border>
+            <Border  HeightRequest="80"
+                     WidthRequest="80"
+                     BackgroundColor="#604F3F"
+                     Margin="5"
+                     x:Name="HomeButtonBorder"
+            >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="25" />
+                </Border.StrokeShape>
+                <ImageButton Source="icon_home" HeightRequest="80" Clicked="HomeButton_OnClicked" />
+            </Border>
+
+
+
+</VerticalStackLayout>
+        
+
+        <Grid Grid.Row="0" RowSpan="2" Grid.RowDefinitions="Auto, *"
+             >
+            
+            <ImageButton Grid.Row="1" x:Name="CharacterImage" 
+                         Clicked="ImageButton_OnClicked" 
+                         Aspect="AspectFit" 
+                         WidthRequest="300" 
+                         Margin="50, 100, 0,0"
+                         HeightRequest="500"
+                         Grid.RowSpan="2"
+                         Source="sepp_transparent_1"
+                         HorizontalOptions="Start"
+                         VerticalOptions="End"
+            />
+            <Image Grid.Row="0" x:Name="FeelingBubbleImage"
+                   VerticalOptions="End"
+                   WidthRequest="200"
+                   Margin="0,200"
+                   HorizontalOptions="End"
+            />
+        </Grid>
+        <Button BackgroundColor="Black" Grid.RowSpan="2" Opacity="1" x:Name="FadeInBorder" Clicked="FadeInBorder_OnClicked"></Button>
+    </Grid>
+</ContentPage>

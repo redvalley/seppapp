@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:SeppApp.Properties"
+             x:Class="TalkingSepp.SplashPage"
+             BackgroundColor="#D76B0A">
+    <Grid RowDefinitions="*, Auto" BackgroundColor="Transparent">
+        
+
+        <Image Grid.Row="0" Grid.RowSpan="2"
+               x:Name="ImageTalkingSepp"
+               Source="logo_sepp_app.png"
+
+               VerticalOptions="Center" 
+               HorizontalOptions="Center" />
+
+        <Image Grid.Row="0" Grid.RowSpan="2"
+               x:Name="ImageTalkingSeppPro"
+               Source="logo_talking_sepp_pro.png"
+               VerticalOptions="Center" 
+               HorizontalOptions="Center" />
+
+        
+
+        <Label Grid.Row="1" Text="{x:Static resources:Resources.SplashWelcomeAddExplaination }"
+               x:Name="LabelSplashWelcome"
+               VerticalOptions="End" 
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"
+               Margin="20"
+               FontSize="15"
+               TextColor="#FFFFFF"
+               FontAttributes="Bold"
+        >
+        </Label>
+
+        <Label Grid.Row="1" Text="{x:Static resources:Resources.SplashWelcome }"
+               x:Name="LabelSplashWelcomePro"
+               VerticalOptions="End" 
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"
+               Margin="20"
+               FontSize="15"
+               TextColor="White"
+               FontAttributes="Bold"
+        >
+        </Label>
+    </Grid>
+</ContentPage>
