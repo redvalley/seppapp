@@ -1,8 +1,9 @@
-﻿using RedValley.Helper;
-using RedValley;
+﻿using RedValley;
+using RedValley.Helper;
 using RedValley.Mobile.Services;
 
-namespace TalkingSepp
+
+namespace SeppApp
 {
     public partial class App : Application
     {

@@ -1,9 +1,9 @@
-﻿using ColorValley;
-using CommunityToolkit.Maui.Media;
+﻿using CommunityToolkit.Maui.Media;
 using Plugin.AdMob.Services;
+using Plugin.Maui.Audio;
 using RedValley.Mobile.Services;
 
-namespace TalkingSepp;
+namespace SeppApp;
 
 public static class ServiceCollectionExtension
 {
@@ -17,6 +17,7 @@ public static class ServiceCollectionExtension
             provider => new RedValleyInterstitualAdService(provider.GetRequiredService<IInterstitialAdService>(), AppSettings.AdMobAdUnitIdInterstitial));
 #endif
         services.AddSingleton<ISpeechToText>(SpeechToText.Default);
+        services.AddSingleton<IAudioManager>(AudioManager.Current);
     }
 
     public static void AddPages(this IServiceCollection services)
@@ -24,6 +25,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<SplashPage>();
         services.AddScoped<CompanySplashPage>();
         services.AddScoped<MainPage>();
+        services.AddScoped<GameOachKatzlSchwoafPage>();
     }
 
     public static void AddViewModels(this IServiceCollection services)

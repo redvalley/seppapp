@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:SeppApp.Properties"
+             x:Class="SeppApp.DataPrivacyPage"
+             Title="{x:Static resources:Resources.DataPrivacyPageTitle}"
+             >
+    <ScrollView>
+        <VerticalStackLayout>
+            <Button x:Name="ConsentRemoveButton" 
+                    Margin="20" 
+                    Text="{x:Static resources:Resources.ButtonTextDataPrivacyConsentRemove }" 
+                    Clicked="RemoveConsentButton_OnClicked" />
+            <Label Margin="20" 
+                   HorizontalTextAlignment="Start"
+                   Text="{x:Static resources:Resources.DataPrivacyMainText }" 
+                   Style="{StaticResource LightLabel}" />
+        </VerticalStackLayout>
+        
+    </ScrollView>
+    
+</ContentPage>

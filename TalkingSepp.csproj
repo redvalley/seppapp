@@ -57,9 +57,11 @@
 		<PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
 	</ItemGroup>
 
+
+
 	<ItemGroup>
-	  <ProjectReference Include="..\..\RedValley.Mobile\RedValley.Mobile.csproj" />
-	  <ProjectReference Include="..\..\RedValley\RedValley.csproj" />
+	  <ProjectReference Include="..\..\redvalley\RedValley.Mobile\RedValley.Mobile.csproj" />
+	  <ProjectReference Include="..\..\redvalley\RedValley\RedValley.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -79,6 +81,15 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="CompanySplashPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="DataPrivacyPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="GameOachKatzlSchwoafPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ImpressumPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="SplashPage.xaml">

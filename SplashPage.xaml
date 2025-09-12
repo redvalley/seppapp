@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:SeppApp.Properties"
-             x:Class="TalkingSepp.SplashPage"
+             x:Class="SeppApp.SplashPage"
              BackgroundColor="#D76B0A">
     <Grid RowDefinitions="*, Auto" BackgroundColor="Transparent">
         

@@ -7,11 +7,13 @@ using RedValley.Helper;
 using TalkingSepp.Models;
 using AudioManager = Plugin.Maui.Audio.AudioManager;
 
-namespace TalkingSepp
+namespace SeppApp
 {
     public partial class MainPage : ContentPage
     {
         private readonly ISpeechToText _speechToText;
+        private readonly IAudioManager _audioManager;
+
         private IDispatcherTimer _characterAnimationTimer;
         private bool _characterIsBusy = false;
         private IDispatcherTimer _heartMinusDispatcher;
@@ -74,15 +76,18 @@ namespace TalkingSepp
         private CharacterStates _characterState = CharacterStates.Awake;
 
         private readonly Random _random = new();
-        readonly IAudioManager _audioManager = AudioManager.Current;
+        
+
         private const long DefaultAnimiationInterval = 150;
         private const long SnoringAnimiationInterval = 2000;
         private const long DrinkingEatingAnimiationInterval = 1000;
 
-        public MainPage(ISpeechToText speechToText)
+        public MainPage(ISpeechToText speechToText, IAudioManager audioManager)
         {
 
             _speechToText = speechToText;
+            _audioManager = audioManager;
+
             InitializeComponent();
 
             _heartMinusDispatcher = Dispatcher.CreateTimer();
@@ -207,7 +212,7 @@ namespace TalkingSepp
             var isGranted = await _speechToText.RequestPermissions(cancellationToken);
             if (!isGranted)
             {
-                await Toast.Make("Permission not granted").Show(CancellationToken.None);
+                await Toast.Make(Properties.Resources.ToastErrorMicrophoneAccessMissing).Show(CancellationToken.None);
                 return;
             }
 
@@ -475,8 +480,10 @@ namespace TalkingSepp
         {
             base.OnAppearing();
             HomeButtonBorder.IsVisible = false;
-            VolksfestButtonBorder.IsVisible = true;
-            MaibaumButtonBorder.IsVisible = true;
+            //VolksfestButtonBorder.IsVisible = true;
+            //MaibaumButtonBorder.IsVisible = true;
+            OchkatzlSchwoafGameBorder.IsVisible = true;
+
             _audioPlayerIntroSound.Play();
             _audioPlayerIntroSound.PlaybackEnded += (sender, args) =>
             {
@@ -496,9 +503,9 @@ namespace TalkingSepp
         private async void HomeButton_OnClicked(object? sender, EventArgs e)
         {
             HomeButtonBorder.IsVisible = false;
-            VolksfestButtonBorder.IsVisible = true;
-            MaibaumButtonBorder.IsVisible = true;
-
+            //VolksfestButtonBorder.IsVisible = true;
+            //MaibaumButtonBorder.IsVisible = true;
+            OchkatzlSchwoafGameBorder.IsVisible = true;
             await ChangeScene("background_wiese.png", "background_sound_wiese.mp3");
         }
 
@@ -531,6 +538,8 @@ namespace TalkingSepp
                 GetRandomEntry(_audioPlayerGreeting));
         }
 
+
+        /*
         private async void VolksfestButton_OnClicked(object? sender, EventArgs e)
         {
             HomeButtonBorder.IsVisible = true;
@@ -549,6 +558,24 @@ namespace TalkingSepp
 
             await ChangeScene("background_maibaum.png", "maibaum.mp3");
 
+        }*/
+
+        private void ImprintButton_OnClicked(object? sender, EventArgs e)
+        {
+            this.Navigation.PushAsync(new ImpressumPage());
+        }
+
+        private void DataPrivacyButton_OnClicked(object? sender, EventArgs e)
+        {
+            this.Navigation.PushAsync(new DataPrivacyPage());
+        }
+
+        private async void OchkatzlschwafGameButton_OnClicked(object? sender, EventArgs e)
+        {
+            HomeButtonBorder.IsVisible = true;
+            OchkatzlSchwoafGameBorder.IsVisible = false;
+
+            await ChangeScene("background_oachkatzlschwoaf_game.png", "background_sound_wiese.mp3");
         }
     }
 

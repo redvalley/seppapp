@@ -61,7 +61,126 @@ namespace SeppApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Talking Sepp.
+        ///   Looks up a localized string similar to Do you really want to withdraw your consent to data protection? This app can only be fully used if data protection consent is accepted..
+        /// </summary>
+        internal static string AlertMessageDataPrivacyConsentRemove {
+            get {
+                return ResourceManager.GetString("AlertMessageDataPrivacyConsentRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⚠️ Remove data privacy consent?.
+        /// </summary>
+        internal static string AlertTitleDataPrivacyConsentRemove {
+            get {
+                return ResourceManager.GetString("AlertTitleDataPrivacyConsentRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string ButtonCancelText {
+            get {
+                return ResourceManager.GetString("ButtonCancelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string ButtonOkText {
+            get {
+                return ResourceManager.GetString("ButtonOkText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Consent.
+        /// </summary>
+        internal static string ButtonTextDataPrivacyConsentRemove {
+            get {
+                return ResourceManager.GetString("ButtonTextDataPrivacyConsentRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Privacy Policy of Red Valley Software GmbH for the App “Sepp App”**  
+        ///Effective Date: September 2025
+        ///
+        ///Protecting your personal data is a key concern for us.  
+        ///This privacy policy informs you about the processing of your personal data in connection with the use of the “Sepp App” in accordance with applicable data protection laws:
+        ///
+        ///- EU General Data Protection Regulation (GDPR)  
+        ///- Revised Swiss Data Protection Act (revDSG)  
+        ///- UK GDPR and Data Protection Act 2018  
+        ///- Privacy and Electronic Communica [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DataPrivacyMainText {
+            get {
+                return ResourceManager.GetString("DataPrivacyMainText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data privacy.
+        /// </summary>
+        internal static string DataPrivacyPageTitle {
+            get {
+                return ResourceManager.GetString("DataPrivacyPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legal Notice:
+        ///Information according to Section 5 of the German Telemedia Act (TMG):
+        ///Responsible company:
+        ///Red Valley Software GmbH
+        ///Headquarters: Am Pumperhölzl 12, 84323 Massing
+        ///The company is registered in the commercial register and is a member of the Lower Bavaria Chamber of Industry and Commerce (IHK) (ihk@passau.ihk.de).
+        ///Telephone: +49 8724 2071850
+        ///E-Mail: rupert.eder@redvalley-software.com
+        ///Website: www.redvalley-software.com
+        ///Management: Rupert Eder
+        ///Registration number: HRB 11508
+        ///VAT identifi [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ImpressumMainText {
+            get {
+                return ResourceManager.GetString("ImpressumMainText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Imprint.
+        /// </summary>
+        internal static string ImpressumPageTitle {
+            get {
+                return ResourceManager.GetString("ImpressumPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tap the squirrel to start the game. Sepp will pronounce the word correctly first — listen carefully! Then it&apos;s your turn: try to repeat the word as accurately as possible to earn the highest score you can..
+        /// </summary>
+        internal static string LabelGameHintOachkatzlSchwoaf {
+            get {
+                return ResourceManager.GetString("LabelGameHintOachkatzlSchwoaf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game Instructions:.
+        /// </summary>
+        internal static string LabelGameInstructions {
+            get {
+                return ResourceManager.GetString("LabelGameInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sepp App.
         /// </summary>
         internal static string MainPageTitle {
             get {
@@ -84,6 +203,16 @@ namespace SeppApp.Properties {
         internal static string SplashWelcomeAddExplaination {
             get {
                 return ResourceManager.GetString("SplashWelcomeAddExplaination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Microphone Access Missing:
+        ///Please enable microphone permission to play the game..
+        /// </summary>
+        internal static string ToastErrorMicrophoneAccessMissing {
+            get {
+                return ResourceManager.GetString("ToastErrorMicrophoneAccessMissing", resourceCulture);
             }
         }
     }

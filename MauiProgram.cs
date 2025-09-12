@@ -1,11 +1,9 @@
-﻿using CommunityToolkit.Maui.Media;
-using Microsoft.Extensions.Logging;
-using Plugin.AdMob;
+﻿using Plugin.AdMob;
 using Plugin.AdMob.Configuration;
 using RedValley;
 using RedValley.Helper;
 
-namespace TalkingSepp
+namespace SeppApp
 {
     public static class MauiProgram
     {
@@ -26,7 +24,7 @@ namespace TalkingSepp
         {
             return ExceptionHelper.Try("MauiProgram.CreateMauiApp", () =>
             {
-#if DEBUG && !PRO_VERSION
+#if DEBUG
                 AdConfig.UseTestAdUnitIds = true;
 #endif
                 MauiAppBuilder builder = MauiApp.CreateBuilder();
@@ -38,14 +36,11 @@ namespace TalkingSepp
                         services.AddViewModels();
                         services.AddPages();
                     }))
-                    .UseMauiApp<TalkingSepp.App>()
-#if !PRO_VERSION
+                    .UseMauiApp<App>()
                     .UseAdMob(automaticallyAskForConsent: false)
-#endif
                     .ConfigureFonts(fonts =>
                     {
-                        fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                        fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                        fonts.AddFont("Fredoka-Medium.ttf", "Fredoka-Medium");
                     });
 
 

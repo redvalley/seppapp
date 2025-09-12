@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace TalkingSepp
+namespace SeppApp
 {
     public class Program
     {

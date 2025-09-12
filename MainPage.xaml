@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TalkingSepp.MainPage"
+             x:Class="SeppApp.MainPage"
              >
     <Grid RowDefinitions="*, Auto" ColumnDefinitions="*">
         <Image x:Name="BackgroundImage" Grid.RowSpan="2"  Source="background_wiese.png" Aspect="Fill"></Image>
-        
-        
+
+
         <Label Grid.Row="1" TextColor="White" x:Name="RecognizedText" />
 
         <HorizontalStackLayout VerticalOptions="Start" HorizontalOptions="Start" Margin="5">
@@ -43,7 +43,7 @@
 
         </HorizontalStackLayout>
 
-       
+
         <Image x:Name="CharacterHeart" Source="heart_transparent" HeightRequest="50" HorizontalOptions="End" VerticalOptions="Start" Margin="20" ></Image>
         <VerticalStackLayout VerticalOptions="Start" 
                              HorizontalOptions="Start" 
@@ -63,6 +63,7 @@
                 <ImageButton Source="icon_talk" HeightRequest="80" Clicked="TalkToSepp_OnClicked" />
             </Border>
 
+            <!--
             <Border  HeightRequest="80"
                      WidthRequest="80"
                      BackgroundColor="#604F3F"
@@ -86,6 +87,18 @@
                 </Border.StrokeShape>
                 <ImageButton Source="icon_maibaum" HeightRequest="80" Clicked="MaibaumButton_OnClicked" />
             </Border>
+            -->
+            <Border  HeightRequest="80"
+                     WidthRequest="80"
+                     BackgroundColor="#604F3F"
+                     Margin="5"
+                     x:Name="OchkatzlSchwoafGameBorder"
+            >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="25" />
+                </Border.StrokeShape>
+                <ImageButton Source="icon_oachkatzlschwoaf_game" HeightRequest="80" Clicked="OchkatzlschwafGameButton_OnClicked" />
+            </Border>
             <Border  HeightRequest="80"
                      WidthRequest="80"
                      BackgroundColor="#604F3F"
@@ -100,12 +113,12 @@
 
 
 
-</VerticalStackLayout>
-        
+        </VerticalStackLayout>
+
 
         <Grid Grid.Row="0" RowSpan="2" Grid.RowDefinitions="Auto, *"
              >
-            
+
             <ImageButton Grid.Row="1" x:Name="CharacterImage" 
                          Clicked="ImageButton_OnClicked" 
                          Aspect="AspectFit" 
@@ -124,6 +137,33 @@
                    HorizontalOptions="End"
             />
         </Grid>
-        <Button BackgroundColor="Black" Grid.RowSpan="2" Opacity="1" x:Name="FadeInBorder" Clicked="FadeInBorder_OnClicked"></Button>
+        
+        <HorizontalStackLayout VerticalOptions="End" HorizontalOptions="Start" Margin="0">
+            <Border  HeightRequest="60"
+                     WidthRequest="60"
+                     BackgroundColor="#604F3F"
+                     Margin="5"
+            >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15" />
+                </Border.StrokeShape>
+                <ImageButton Margin="0" Source="icon_dataprivacy.png" Clicked="ImprintButton_OnClicked" />
+            </Border>
+            <Border  HeightRequest="60"
+                     WidthRequest="60"
+                     BackgroundColor="#604F3F"
+                     Margin="5"
+            >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15" />
+                </Border.StrokeShape>
+                <ImageButton Source="icon_imprint.png" Clicked="DataPrivacyButton_OnClicked" />
+            </Border>
+        </HorizontalStackLayout>
+        <Button BackgroundColor="Black" 
+                Grid.RowSpan="2" Opacity="1" 
+                CornerRadius="0"
+                x:Name="FadeInBorder" Clicked="FadeInBorder_OnClicked"></Button>
     </Grid>
+    
 </ContentPage>

@@ -117,13 +117,235 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlertMessageDataPrivacyConsentRemove" xml:space="preserve">
+    <value>Do you really want to withdraw your consent to data protection? This app can only be fully used if data protection consent is accepted.</value>
+  </data>
+  <data name="AlertTitleDataPrivacyConsentRemove" xml:space="preserve">
+    <value>⚠️ Remove data privacy consent?</value>
+  </data>
+  <data name="ButtonCancelText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ButtonOkText" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ButtonTextDataPrivacyConsentRemove" xml:space="preserve">
+    <value>Remove Consent</value>
+  </data>
+  <data name="DataPrivacyMainText" xml:space="preserve">
+    <value>Privacy Policy of Red Valley Software GmbH for the App “Sepp App”**  
+Effective Date: September 2025
+
+Protecting your personal data is a key concern for us.  
+This privacy policy informs you about the processing of your personal data in connection with the use of the “Sepp App” in accordance with applicable data protection laws:
+
+- EU General Data Protection Regulation (GDPR)  
+- Revised Swiss Data Protection Act (revDSG)  
+- UK GDPR and Data Protection Act 2018  
+- Privacy and Electronic Communications Regulations (PECR) in the UK  
+- California Consumer Privacy Act (CCPA) and California Privacy Rights Act (CPRA) in the USA
+
+1. Data Controller
+
+The controller responsible for data processing in connection with this app is:  
+**Red Valley Software GmbH**  
+Am Pumperhölzl 12  
+84323 Massing, Germany  
+Email: [rupert.eder@redvalley-software.com](mailto:rupert.eder@redvalley-software.com)  
+Website: [www.redvalley-software.com](https://www.redvalley-software.com)
+
+2. Types of Data Processed
+
+This app is ad-supported. Therefore, the following personal data may be processed by integrated third-party providers:
+
+- Advertising IDs (e.g., IDFA, GAID)  
+- IP address  
+- Device information (e.g., model, operating system)  
+- Location data (if enabled)  
+- Usage behavior (e.g., clicks, session duration)
+
+Additionally, the following data may be processed when using specific features:
+
+- Game score  
+- Time of gameplay  
+- Feedback sent via email
+
+3. Purposes of Data Processing
+
+- Providing app functionality  
+- Displaying personalized advertisements  
+- Analyzing and improving the app  
+- Publishing scores on the global leaderboard  
+- Evaluating competitions (e.g., monthly challenges)  
+- Processing user feedback
+
+4. Legal Basis for Processing
+
+- Consent (Art. 6(1)(a) GDPR / Art. 6 revDSG / Art. 6 UK GDPR)  
+- Contract performance (Art. 6(1)(b) GDPR / UK GDPR)  
+- Legitimate interest, where permitted (e.g., fraud prevention)
+
+5. Advertising, Tracking &amp; Cookies
+
+Third-party providers display ads within the app. Personal data is not processed by the app itself but by the integrated ad networks. These providers may collect:
+
+- Advertising IDs (e.g., IDFA, GAID)  
+- IP address  
+- Device information (e.g., model, OS)  
+- Location data (if enabled)  
+- Usage behavior (e.g., clicks, session duration)
+
+Ad networks used:
+
+- Google AdMob  
+- Facebook Audience Network  
+- AppLovin
+
+Processing is carried out exclusively by these third parties and only with your explicit consent under Art. 6(1)(a) GDPR / UK GDPR.  
+For more information, please refer to the privacy policies of the respective providers.
+
+**Note for UK users:**  
+This processing is also subject to the Privacy and Electronic Communications Regulations (PECR). Consent is obtained via a consent management tool before technologies such as cookies or SDKs are activated.
+
+---
+
+6. Consent Management
+
+We obtain your consent via a consent management tool. You may withdraw your consent at any time using the “Withdraw Consent” button at the top of the app.
+
+---
+
+7. Feedback via Email
+
+If you send us feedback, we process your email address and the content of your message solely to respond to your inquiry.
+
+
+8. Data Sharing &amp; Transfers
+
+Data is only shared where necessary for the stated purposes or if you have given consent. Transfers to third countries (e.g., the USA) are carried out only in compliance with legal requirements:
+
+- EU: Standard Contractual Clauses or adequacy decision  
+- Switzerland: Art. 16 ff. revDSG  
+- UK: UK IDTA or adequacy decision
+
+9. Data Retention
+
+Data is retained only as long as necessary for the stated purposes or as required by law. After that, data is deleted or anonymized.
+
+
+10. Your Rights
+
+Depending on your jurisdiction, you may have the following rights:
+
+- Access  
+- Rectification  
+- Erasure  
+- Restriction of processing  
+- Data portability  
+- Objection  
+- Withdrawal of consent
+
+To exercise your rights, please contact:  
+Email: [rupert.eder@redvalley-software.com](mailto:rupert.eder@redvalley-software.com)
+
+11. Special Notice for UK Users
+
+In addition to the GDPR, UK users are subject to the UK GDPR, the Data Protection Act 2018, and PECR.  
+We process your data in accordance with these regulations. Transfers outside the UK are only made with appropriate safeguards (e.g., UK IDTA).
+
+12. Children and Minors
+
+Our app is not directed at children under the age of 13. If we become aware that personal data of children has been processed without parental consent, we will delete it immediately.  
+For users in the USA, the Children’s Online Privacy Protection Act (COPPA) applies. We do not knowingly collect personal data from children under 13 in accordance with COPPA.
+
+13. Technical and Organizational Measures (TOMs)
+
+We protect your data through:
+
+- Encryption during data transmission  
+- Access restrictions  
+- Regular security updates  
+- Secure server locations
+
+14. Notice for US Users (especially California)
+
+For users residing in the United States, especially California, the California Consumer Privacy Act (CCPA) and California Privacy Rights Act (CPRA) apply. You have the following rights:
+
+- Right to know what personal data is collected  
+- Right to delete your personal data  
+- Right to opt out of the sale of personal data  
+- Right to data portability
+
+We do not sell personal data as defined under the CCPA. Data is only shared with third parties to provide app functionality or with your explicit consent.
+
+
+15. “Do Not Sell My Personal Information” (for California Users)
+
+Under the CCPA and CPRA, California users have the right to opt out of the sale of their personal data.
+
+You can exercise this right using the “Withdraw Consent” button described in Section 6. For California users, this opt-out is treated as a “Do Not Sell My Personal Information” request. Your choice is stored via our consent management tool and can be changed at any time.</value>
+  </data>
+  <data name="DataPrivacyPageTitle" xml:space="preserve">
+    <value>Data privacy</value>
+  </data>
+  <data name="ImpressumMainText" xml:space="preserve">
+    <value>Legal Notice:
+Information according to Section 5 of the German Telemedia Act (TMG):
+Responsible company:
+Red Valley Software GmbH
+Headquarters: Am Pumperhölzl 12, 84323 Massing
+The company is registered in the commercial register and is a member of the Lower Bavaria Chamber of Industry and Commerce (IHK) (ihk@passau.ihk.de).
+Telephone: +49 8724 2071850
+E-Mail: rupert.eder@redvalley-software.com
+Website: www.redvalley-software.com
+Management: Rupert Eder
+Registration number: HRB 11508
+VAT identification number according to Section 27a of the German VAT Act (UStG): DE322142672
+Programming: rupert.eder@redvalley-software.com
+
+Data protection:
+You can find our data protection information under the "Data protection" button.
+
+Copyright Notice:
+
+Copyright 2025 by:
+Red Valley Software GmbH
+All images and content published in this application are protected by copyright.
+
+No part of this application may be reproduced, distributed, or otherwise used in any form outside the strict limits of copyright law without the written permission of the author.
+
+Liability:
+
+We are responsible for the content of our app in accordance with general law, in particular Section 7 I of the German Telemedia Act (TMG).
+
+All content was created to the best of our knowledge and belief, exercising due care.
+
+However, no guarantee is given for its completeness and accuracy, or for any errors.
+
+Red Valley Software GmbH is particularly not liable for economic damages resulting from the use of incomplete or incorrect data content.
+
+</value>
+  </data>
+  <data name="ImpressumPageTitle" xml:space="preserve">
+    <value>Imprint</value>
+  </data>
+  <data name="LabelGameHintOachkatzlSchwoaf" xml:space="preserve">
+    <value>Tap the squirrel to start the game. Sepp will pronounce the word correctly first — listen carefully! Then it's your turn: try to repeat the word as accurately as possible to earn the highest score you can.</value>
+  </data>
+  <data name="LabelGameInstructions" xml:space="preserve">
+    <value>Game Instructions:</value>
+  </data>
   <data name="MainPageTitle" xml:space="preserve">
-    <value>Talking Sepp</value>
+    <value>Sepp App</value>
   </data>
   <data name="SplashWelcome" xml:space="preserve">
     <value>Welcome to Talking Sepp Pro, the game starts immediately...</value>
   </data>
   <data name="SplashWelcomeAddExplaination" xml:space="preserve">
     <value>This app is ad-supported 😉, the game starts immediately after the following advertisement...</value>
+  </data>
+  <data name="ToastErrorMicrophoneAccessMissing" xml:space="preserve">
+    <value>Microphone Access Missing:
+Please enable microphone permission to play the game.</value>
   </data>
 </root>

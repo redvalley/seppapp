@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SeppApp.GameOachKatzlSchwoafPage"
+             Title="GameOachKatzlSchwoafPage"
+             xmlns:resources="clr-namespace:SeppApp.Properties"
+             >
+    <Grid RowDefinitions="*, Auto" ColumnDefinitions="*">
+        <Image x:Name="BackgroundImage" Grid.RowSpan="2"  Source="background_oachkatzlschwoaf_game.png" Aspect="Fill"></Image>
+        <Border>
+            <HorizontalStackLayout>
+                <Image Source="icon_bavaria_coin.png"></Image>
+                <Label x:Name="CointLabel" Text=""></Label>
+            </HorizontalStackLayout>
+        </Border>
+
+        <Border Style="{StaticResource HintBorder}">
+            <Label Text="{x:Static resources:Resources.ImpressumMainText }"></Label>
+        </Border>
+        <Button BackgroundColor="{StaticResource Quinary}" Clicked="StartGameButton_OnClicked"></Button>
+    </Grid>
+</ContentPage>

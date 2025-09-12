@@ -5,9 +5,9 @@ VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalkingSepp", "TalkingSepp.csproj", "{4ED6A384-D3BC-4D1D-B1DD-3F5DA38211A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedValley", "..\..\RedValley\RedValley.csproj", "{20C43357-AEE6-3DE4-CB15-6C4B4241B3B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedValley", "..\..\redvalley\RedValley\RedValley.csproj", "{EE6D896F-16F0-EDB1-94ED-696BFDCE7A69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedValley.Mobile", "..\..\RedValley.Mobile\RedValley.Mobile.csproj", "{17C0D464-D417-C50E-5FDE-0D42BB80717A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedValley.Mobile", "..\..\redvalley\RedValley.Mobile\RedValley.Mobile.csproj", "{1527DDF2-91F6-8709-CF67-2510049B62C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,14 +20,14 @@ Global
 		{4ED6A384-D3BC-4D1D-B1DD-3F5DA38211A8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{4ED6A384-D3BC-4D1D-B1DD-3F5DA38211A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4ED6A384-D3BC-4D1D-B1DD-3F5DA38211A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20C43357-AEE6-3DE4-CB15-6C4B4241B3B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20C43357-AEE6-3DE4-CB15-6C4B4241B3B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20C43357-AEE6-3DE4-CB15-6C4B4241B3B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20C43357-AEE6-3DE4-CB15-6C4B4241B3B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17C0D464-D417-C50E-5FDE-0D42BB80717A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17C0D464-D417-C50E-5FDE-0D42BB80717A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17C0D464-D417-C50E-5FDE-0D42BB80717A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17C0D464-D417-C50E-5FDE-0D42BB80717A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE6D896F-16F0-EDB1-94ED-696BFDCE7A69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE6D896F-16F0-EDB1-94ED-696BFDCE7A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE6D896F-16F0-EDB1-94ED-696BFDCE7A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE6D896F-16F0-EDB1-94ED-696BFDCE7A69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1527DDF2-91F6-8709-CF67-2510049B62C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1527DDF2-91F6-8709-CF67-2510049B62C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1527DDF2-91F6-8709-CF67-2510049B62C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1527DDF2-91F6-8709-CF67-2510049B62C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,11 +1,8 @@
 using RedValley;
 using RedValley.Helper;
 using TalkingSepp;
-#if !PRO_VERSION
-using Plugin.AdMob.Services;
-#endif
 
-namespace ColorValley;
+namespace SeppApp;
 
 public partial class CompanySplashPage : ContentPage
 {
