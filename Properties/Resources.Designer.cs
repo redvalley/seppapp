@@ -106,7 +106,7 @@ namespace SeppApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Privacy Policy of Red Valley Software GmbH for the App “Sepp App”**  
+        ///   Looks up a localized string similar to Privacy Policy of Red Valley Software GmbH for the App “Sepp App”  
         ///Effective Date: September 2025
         ///
         ///Protecting your personal data is a key concern for us.  
@@ -115,7 +115,7 @@ namespace SeppApp.Properties {
         ///- EU General Data Protection Regulation (GDPR)  
         ///- Revised Swiss Data Protection Act (revDSG)  
         ///- UK GDPR and Data Protection Act 2018  
-        ///- Privacy and Electronic Communica [rest of string was truncated]&quot;;.
+        ///- Privacy and Electronic Communicati [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DataPrivacyMainText {
             get {
@@ -162,11 +162,64 @@ namespace SeppApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tap the squirrel to start the game. Sepp will pronounce the word correctly first — listen carefully! Then it&apos;s your turn: try to repeat the word as accurately as possible to earn the highest score you can..
+        ///   Looks up a localized string similar to Tap the squirrel to start the game.
+        ///Sepp will pronounce the word correctly first — listen carefully! 
+        ///Then it&apos;s your turn: 
+        ///try to repeat the word as accurately as possible to earn the highest score you can..
         /// </summary>
         internal static string LabelGameHintOachkatzlSchwoaf {
             get {
                 return ResourceManager.GetString("LabelGameHintOachkatzlSchwoaf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ❌ No Reward – 0 Coins
+        ///
+        ///Looks like it wasn’t your best run... No coins this time, but chin up – next round is your chance to shine! 
+        ///
+        ///Just tap the squirrel to start a new round..
+        /// </summary>
+        internal static string LabelGameHintOachkatzlSchwoafBad {
+            get {
+                return ResourceManager.GetString("LabelGameHintOachkatzlSchwoafBad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🥈 Great Job – 10 Coins
+        ///
+        ///Strong performance! You were close to the top. You’ve earned 10 coins for your effort. Tap the squirrel to show what you’ve got in the next round!.
+        /// </summary>
+        internal static string LabelGameHintOachkatzlSchwoafGood {
+            get {
+                return ResourceManager.GetString("LabelGameHintOachkatzlSchwoafGood", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🥉 Decent Effort – 5 Coins
+        ///
+        ///Not bad! You held your ground. You get 5 coins for your determination – keep going, practice makes champions! 
+        ///
+        ///One tap on the squirrel, and you&apos;re back in the game!.
+        /// </summary>
+        internal static string LabelGameHintOachkatzlSchwoafSolid {
+            get {
+                return ResourceManager.GetString("LabelGameHintOachkatzlSchwoafSolid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🥇 Top Performance – 20 Coins
+        ///
+        ///Wow! You nailed it like a true pro. Your skills are impressive – you’ve earned a whopping 20 coins as a reward. 
+        ///
+        ///Tap the squirrel to jump straight into the next round!.
+        /// </summary>
+        internal static string LabelGameHintOachkatzlSchwoafTop {
+            get {
+                return ResourceManager.GetString("LabelGameHintOachkatzlSchwoafTop", resourceCulture);
             }
         }
         

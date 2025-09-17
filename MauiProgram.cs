@@ -25,6 +25,7 @@ namespace SeppApp
             return ExceptionHelper.Try("MauiProgram.CreateMauiApp", () =>
             {
 #if DEBUG
+                AppSettings.AreAdsEnabled = false;
                 AdConfig.UseTestAdUnitIds = true;
 #endif
                 MauiAppBuilder builder = MauiApp.CreateBuilder();
@@ -36,14 +37,12 @@ namespace SeppApp
                         services.AddViewModels();
                         services.AddPages();
                     }))
-                    .UseMauiApp<App>()
-                    .UseAdMob(automaticallyAskForConsent: false)
-                    .ConfigureFonts(fonts =>
-                    {
-                        fonts.AddFont("Fredoka-Medium.ttf", "Fredoka-Medium");
-                    });
+                    .UseMauiApp<App>();
 
-
+                builder = builder.UseAdMob(automaticallyAskForConsent: false);
+                builder = builder.ConfigureFonts(fonts => {
+                       fonts.AddFont("Fredoka-Medium.ttf", "Fredoka-Medium");
+                });
 
                 var mauiApp = builder.Build();
                 Resolver.RegisterServiceProvider(mauiApp.Services);

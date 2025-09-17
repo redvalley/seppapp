@@ -1,7 +1,9 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Android.Views;
 using AndroidX.AppCompat.App;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 
 namespace SeppApp
 {
@@ -13,8 +15,8 @@ namespace SeppApp
         {
             base.OnCreate(savedInstanceState);
             AppCompatDelegate.DefaultNightMode = AppCompatDelegate.ModeNightNo;
-            //Window.SetStatusBarColor(Android.Graphics.Color.Transparent); //Optional: make status bar transparent
-            //Window.DecorView.SystemUiFlags = (SystemUiFlags)(SystemUiFlags.Fullscreen | SystemUiFlags.LayoutFullscreen);
+            Window.SetStatusBarColor(Android.Graphics.Color.Transparent); //Optional: make status bar transparent
+            Window.DecorView.SystemUiFlags = (SystemUiFlags)(SystemUiFlags.Fullscreen | SystemUiFlags.LayoutFullscreen);
         }
     }
 }

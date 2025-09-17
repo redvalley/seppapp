@@ -2,6 +2,7 @@ using Plugin.AdMob.Services;
 using RedValley;
 using RedValley.Helper;
 using RedValley.Mobile.Services;
+using RedValley.Settings;
 
 namespace SeppApp;
 
@@ -38,7 +39,24 @@ public partial class SplashPage : ContentPage
             this._isMainPageShowing = false;
             base.OnAppearing();
 
-            await ShowMainPageAfterAd();
+            if (!AppSettings.AreAdsEnabled)
+            {
+                await ShowMainPageWithoutAd();
+                return;
+            }
+
+            AppUserSettings currentSettings = AppUserSettings.Load();
+            var isGameStartedFirstTime = currentSettings.IsGameStartedFirstTime;
+            if (isGameStartedFirstTime)
+            {
+                currentSettings.IsGameStartedFirstTime = false;
+                currentSettings.Save();
+                await ShowMainPageWithoutAd();
+            }
+            else
+            {
+                await ShowMainPageAfterAd();
+            }
         }, Logging.CreateLogger(Logging.CategoryBootstrapping));
         
     }
@@ -61,6 +79,15 @@ public partial class SplashPage : ContentPage
         });
     }
 
+    private async Task ShowMainPageWithoutAd()
+    {
+        await Task.Run(async () =>
+        {
+            await Task.Delay(2000);
+            await MainThread.InvokeOnMainThreadAsync(ShowMainPage);
+        });
+    }
+
     private void ShowMainPage()
     {
         ExceptionHelper.Try("SplashPage.ShowMainPage", () =>
@@ -80,6 +107,6 @@ public partial class SplashPage : ContentPage
                 }
             });
         }, Logging.CreateBootstrappingLogger());
-        
+
     }
 }

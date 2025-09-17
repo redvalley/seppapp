@@ -6,7 +6,7 @@
              Title="{x:Static resources:Resources.ImpressumPageTitle}"
              >
 	<ScrollView>
-        <Border Margin="5">
+        <Border Margin="5" BackgroundColor="Green">
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="20,20,20,20" />
             </Border.StrokeShape>

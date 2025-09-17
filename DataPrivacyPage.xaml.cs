@@ -7,14 +7,16 @@ public partial class DataPrivacyPage : ContentPage
     public DataPrivacyPage()
     {
         InitializeComponent();
-#if PRO_VERSION
-        this.ConsentRemoveButton.IsVisible = false;
-#endif
+
+        if (AppSettings.AreAdsEnabled)
+        {
+            this.ConsentRemoveButton.IsVisible = false;
+        }
     }
 
     private async void RemoveConsentButton_OnClicked(object? sender, EventArgs e)
     {
-#if !PRO_VERSION
+
         var adConsentService = IPlatformApplication.Current?.Services.GetService<IAdConsentService>();
         if (adConsentService != null)
         {
@@ -28,7 +30,6 @@ public partial class DataPrivacyPage : ContentPage
                 adConsentService.Reset();
             }
         }
-#endif
     }
 
 }

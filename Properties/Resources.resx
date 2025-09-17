@@ -133,7 +133,7 @@
     <value>Remove Consent</value>
   </data>
   <data name="DataPrivacyMainText" xml:space="preserve">
-    <value>Privacy Policy of Red Valley Software GmbH for the App “Sepp App”**  
+    <value>Privacy Policy of Red Valley Software GmbH for the App “Sepp App”  
 Effective Date: September 2025
 
 Protecting your personal data is a key concern for us.  
@@ -330,7 +330,39 @@ Red Valley Software GmbH is particularly not liable for economic damages resulti
     <value>Imprint</value>
   </data>
   <data name="LabelGameHintOachkatzlSchwoaf" xml:space="preserve">
-    <value>Tap the squirrel to start the game. Sepp will pronounce the word correctly first — listen carefully! Then it's your turn: try to repeat the word as accurately as possible to earn the highest score you can.</value>
+    <value>Tap the squirrel to start the game.
+Sepp will pronounce the word correctly first — listen carefully! 
+Then it's your turn: 
+try to repeat the word as accurately as possible to earn the highest score you can.</value>
+  </data>
+  <data name="LabelGameHintOachkatzlSchwoafBad" xml:space="preserve">
+    <value>❌ No Reward – 0 Coins
+
+Looks like it wasn’t your best run... No coins this time, but chin up – next round is your chance to shine! 
+
+Just tap the squirrel to start a new round.</value>
+    <comment>-</comment>
+  </data>
+  <data name="LabelGameHintOachkatzlSchwoafGood" xml:space="preserve">
+    <value>🥈 Great Job – 10 Coins
+
+Strong performance! You were close to the top. You’ve earned 10 coins for your effort. Tap the squirrel to show what you’ve got in the next round!</value>
+    <comment>-</comment>
+  </data>
+  <data name="LabelGameHintOachkatzlSchwoafSolid" xml:space="preserve">
+    <value>🥉 Decent Effort – 5 Coins
+
+Not bad! You held your ground. You get 5 coins for your determination – keep going, practice makes champions! 
+
+One tap on the squirrel, and you're back in the game!</value>
+    <comment>-</comment>
+  </data>
+  <data name="LabelGameHintOachkatzlSchwoafTop" xml:space="preserve">
+    <value>🥇 Top Performance – 20 Coins
+
+Wow! You nailed it like a true pro. Your skills are impressive – you’ve earned a whopping 20 coins as a reward. 
+
+Tap the squirrel to jump straight into the next round!</value>
   </data>
   <data name="LabelGameInstructions" xml:space="preserve">
     <value>Game Instructions:</value>

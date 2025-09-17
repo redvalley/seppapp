@@ -17,8 +17,8 @@
 		<ApplicationId>com.redvalley-software.seppapp</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1000</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
+		<ApplicationVersion>1001</ApplicationVersion>
 
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>			

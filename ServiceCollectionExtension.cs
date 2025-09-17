@@ -9,13 +9,23 @@ public static class ServiceCollectionExtension
 {
     public static void AddAppServices(this IServiceCollection services)
     {
-#if !PRO_VERSION
-        services.AddSingleton<IRedValleyAppOpenAdService>(
-            provider => new RedValleyAppOpenAdService(provider.GetRequiredService<IAppOpenAdService>(), AppSettings.AdMobAdUnitIdAppOpener) );
 
-        services.AddSingleton<IRedValleyInterstitualAdService>(
-            provider => new RedValleyInterstitualAdService(provider.GetRequiredService<IInterstitialAdService>(), AppSettings.AdMobAdUnitIdInterstitial));
-#endif
+        if (AppSettings.AreAdsEnabled)
+        {
+            services.AddSingleton<IRedValleyAppOpenAdService>(
+                provider => new RedValleyAppOpenAdService(provider.GetRequiredService<IAppOpenAdService>(), AppSettings.AdMobAdUnitIdAppOpener));
+
+            services.AddSingleton<IRedValleyInterstitualAdService>(
+                provider => new RedValleyInterstitualAdService(provider.GetRequiredService<IInterstitialAdService>(), AppSettings.AdMobAdUnitIdInterstitial));
+        }
+        else
+        {
+            services.AddSingleton<IRedValleyAppOpenAdService>(provider => new DummyRedValleyAppOpenAdService());
+
+            services.AddSingleton<IRedValleyInterstitualAdService>(new DummyRedValleyInterstitualAdService());
+        }
+
+
         services.AddSingleton<ISpeechToText>(SpeechToText.Default);
         services.AddSingleton<IAudioManager>(AudioManager.Current);
     }

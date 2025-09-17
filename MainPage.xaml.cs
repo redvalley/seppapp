@@ -3,7 +3,10 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Maui.Media;
 using Plugin.Maui.Audio;
+using RedValley;
 using RedValley.Helper;
+using RedValley.Mobile.Services;
+using SeppApp.Models;
 using TalkingSepp.Models;
 using AudioManager = Plugin.Maui.Audio.AudioManager;
 
@@ -13,8 +16,10 @@ namespace SeppApp
     {
         private readonly ISpeechToText _speechToText;
         private readonly IAudioManager _audioManager;
+        private readonly IRedValleyInterstitualAdService _redValleyInterstitualAdService;
 
         private IDispatcherTimer _characterAnimationTimer;
+        private bool _isFirstTimeOpened = true;
         private bool _characterIsBusy = false;
         private IDispatcherTimer _heartMinusDispatcher;
         public bool IsInterstitualAdShowing { get; set; }
@@ -71,22 +76,23 @@ namespace SeppApp
 
         private List<CharacterFeelings> _characterFeelings = [CharacterFeelings.Hungry, CharacterFeelings.Thirsty, CharacterFeelings.Bored];
 
-        private DebounceDispatcher _characterFeelingsDebounceDispatcher = new DebounceDispatcher(10000);
+        private DebounceDispatcher _characterFeelingsDebounceDispatcher = new DebounceDispatcher(30000);
         private CharacterFeelings _characterFeeling = CharacterFeelings.None;
         private CharacterStates _characterState = CharacterStates.Awake;
 
         private readonly Random _random = new();
-        
+
 
         private const long DefaultAnimiationInterval = 150;
         private const long SnoringAnimiationInterval = 2000;
         private const long DrinkingEatingAnimiationInterval = 1000;
 
-        public MainPage(ISpeechToText speechToText, IAudioManager audioManager)
+        public MainPage(ISpeechToText speechToText, IAudioManager audioManager, IRedValleyInterstitualAdService redValleyInterstitualAdService)
         {
 
             _speechToText = speechToText;
             _audioManager = audioManager;
+            _redValleyInterstitualAdService = redValleyInterstitualAdService;
 
             InitializeComponent();
 
@@ -200,15 +206,23 @@ namespace SeppApp
             CharacterImage.Source = ImageSource.FromFile(_currentcharacterAnimationImageList[_currentAnimationImageIndex]);
         }
 
-        private async void ImageButton_OnClicked(object? sender, EventArgs e)
+        private async void CharacterButton_OnClicked(object? sender, EventArgs e)
         {
+            if (_characterState == CharacterStates.Awake)
+            {
+                CharacterHeartRegenerate();
+            }
+            StopCharacterSleeping();
+            DebounceCharacterFeelings();
             LetSeppSpeak(
                 GetRandomEntry(_audioPlayerTalking));
+            DebounceCharacterFeelings();
+
         }
 
         async Task StartListening(CancellationToken cancellationToken)
         {
-
+            _speechToText.RecognitionResultCompleted += OnRecognitionTextCompleted;
             var isGranted = await _speechToText.RequestPermissions(cancellationToken);
             if (!isGranted)
             {
@@ -216,13 +230,14 @@ namespace SeppApp
                 return;
             }
 
-            _speechToText.RecognitionResultCompleted += OnRecognitionTextCompleted;
+            
             await _speechToText.StartListenAsync(new SpeechToTextOptions { Culture = CultureInfo.CurrentCulture, ShouldReportPartialResults = true }, CancellationToken.None);
 
         }
 
         private async void OnRecognitionTextCompleted(object? sender, SpeechToTextRecognitionResultCompletedEventArgs e)
         {
+            _speechToText.RecognitionResultCompleted -= OnRecognitionTextCompleted;
             if (_characterIsBusy)
             {
                 return;
@@ -298,26 +313,38 @@ namespace SeppApp
             player.Play();
             _currentcharacterAnimationImageList = imageList;
             _characterAnimationTimer.Start();
-            player.PlaybackEnded += (sender, args) =>
-            {
-                DebounceCharacterFeelings();
-                CharacterImage.Source = ImageSource.FromFile("sepp_transparent_1");
-                _characterAnimationTimer.Stop();
-                _characterIsBusy = false;
-                _characterAnimationTimer.Interval = TimeSpan.FromMilliseconds(DefaultAnimiationInterval);
-                _currentAnimationImageIndex = 0;
-            };
+
+            player.PlaybackEnded += LetSeppDoSomethingPlayerOnPlaybackEnded;
         }
 
+        private void LetSeppDoSomethingPlayerOnPlaybackEnded(object? sender, EventArgs e)
+        {
+            DebounceCharacterFeelings();
+            CharacterImage.Source = ImageSource.FromFile("sepp_transparent_1");
+            _characterAnimationTimer.Stop();
+            _characterIsBusy = false;
+            _characterAnimationTimer.Interval = TimeSpan.FromMilliseconds(DefaultAnimiationInterval);
+            _currentAnimationImageIndex = 0;
+            if (sender is IAudioPlayer currentAudioPlayer)
+            {
+                currentAudioPlayer.PlaybackEnded -= LetSeppDoSomethingPlayerOnPlaybackEnded;
+            }
+        }
 
-        
 
         private async Task FadeInScene()
         {
             FadeInBorder.IsVisible = true;
             FadeInBorder.BackgroundColor = Colors.Black;
-            await FadeInBorder.BackgroundColorTo(Colors.Transparent, length: 10000);
+            await FadeInBorder.BackgroundColorTo(Colors.Transparent, length: 5000);
             FadeInBorder.IsVisible = false;
+        }
+
+        private async Task FadeOutScene()
+        {
+            FadeInBorder.IsVisible = true;
+            FadeInBorder.BackgroundColor = Colors.Transparent;
+            await FadeInBorder.BackgroundColorTo(Colors.Black, length: 5000);
         }
 
         private async void LetSeppSleep()
@@ -359,30 +386,36 @@ namespace SeppApp
 
         private async void WeisswurstMitKetchup_Clicked(object? sender, EventArgs e)
         {
-            CharacterImage.Source = ImageSource.FromFile("sepp_grantig");
-            await Task.Delay(2000);
-            LetSeppSpeak(_audioPlayerPfuiDeifeSound);
-            _audioPlayerPfuiDeifeSound.PlaybackEnded += (o, args) =>
+            if (BuyItem(ItemPrices.WeißwurstMitKetchupPrice))
             {
-                CharacterImage.Source = ImageSource.FromFile("sepp_transparent_1");
-            };
+                CharacterImage.Source = ImageSource.FromFile("sepp_grantig");
+                await Task.Delay(2000);
+                LetSeppSpeak(_audioPlayerPfuiDeifeSound);
+                _audioPlayerPfuiDeifeSound.PlaybackEnded += (o, args) =>
+                {
+                    CharacterImage.Source = ImageSource.FromFile("sepp_transparent_1");
+                };
+            }
         }
 
         private void Leberkaese_Clicked(object? sender, EventArgs e)
         {
-            if (_characterFeeling == CharacterFeelings.Hungry)
+            if (_characterFeeling is CharacterFeelings.Hungry or CharacterFeelings.None)
             {
-                StopCharacterSleeping();
-                FeelingFulFilled();
-                _audioPlayerThanks.PlaybackEnded += async (o, args) =>
+                if (BuyItem(ItemPrices.LeberkaeseSemmelPrice))
                 {
-                    CharacterImage.Source = ImageSource.FromFile("eating");
-                    await Task.Delay(1500);
+                    StopCharacterSleeping();
+                    FeelingFulFilled();
+                    _audioPlayerThanks.PlaybackEnded += async (o, args) =>
+                    {
+                        CharacterImage.Source = ImageSource.FromFile("eating");
+                        await Task.Delay(1500);
 
-                    LetSeppEat(_audioPlayerEating);
+                        LetSeppEat(_audioPlayerEating);
 
-                    DebounceCharacterFeelings();
-                };
+                        DebounceCharacterFeelings();
+                    };
+                }
             }
             else
             {
@@ -393,31 +426,45 @@ namespace SeppApp
 
         private void Limo_OnClicked(object? sender, EventArgs e)
         {
-            if (_characterFeeling == CharacterFeelings.Thirsty)
+            if (_characterFeeling is CharacterFeelings.Thirsty or CharacterFeelings.None)
             {
-                StopCharacterSleeping();
-                FeelingFulFilled();
-
-                _audioPlayerThanks.PlaybackEnded += async (o, args) =>
+                if (BuyItem(ItemPrices.LimoPrice))
                 {
-                    
-                    CharacterImage.Source = ImageSource.FromFile("drinking");
-                    await Task.Delay(1500);
-                    
-                    LetSeppDrink(_audioPlayerDrinking);
-                    
-                    DebounceCharacterFeelings();
-                };
+                    StopCharacterSleeping();
+                    FeelingFulFilled();
 
-                
+                    _audioPlayerThanks.PlaybackEnded += async (o, args) =>
+                    {
+
+                        CharacterImage.Source = ImageSource.FromFile("drinking");
+                        await Task.Delay(1500);
+
+                        LetSeppDrink(_audioPlayerDrinking);
+
+                        DebounceCharacterFeelings();
+                    };
+                }
             }
             else
             {
                 DebounceCharacterFeelings();
                 LetSeppSpeak(_audioPlayerNo);
             }
+        }
 
+        private bool BuyItem(int itemPrice)
+        {
+            AppUserSettings appUserSettings = AppUserSettings.Load();
+            if (appUserSettings.Coins >= itemPrice)
+            {
+                appUserSettings.Coins -= itemPrice;
+                ChangeBuyableItemsState(appUserSettings);
+                appUserSettings.Save();
 
+                return true;
+            }
+
+            return false;
         }
 
         private void FeelingFulFilled()
@@ -447,11 +494,11 @@ namespace SeppApp
                         _heartMinusDispatcher.Start();
                     }
                 });
-               
+
             });
         }
 
-        
+
 
         private async void FadeInBorder_OnClicked(object? sender, EventArgs e)
         {
@@ -472,6 +519,7 @@ namespace SeppApp
 
         private async void TalkToSepp_OnClicked(object? sender, EventArgs e)
         {
+            StopCharacterSleeping();
             await StartListening(CancellationToken.None);
         }
 
@@ -479,25 +527,50 @@ namespace SeppApp
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            var userSettings = AppUserSettings.Load();
+            ChangeBuyableItemsState(userSettings);
+            _heartMinusDispatcher.Start();
+            
+            this.CoinLabel.Text = userSettings.Coins.ToString();
+            DebounceCharacterFeelings();
+            StopCharacterSleeping();
+            CharacterHeartRegenerate();
             HomeButtonBorder.IsVisible = false;
+            _audioBackground.Volume = 0.5;
+
             //VolksfestButtonBorder.IsVisible = true;
             //MaibaumButtonBorder.IsVisible = true;
+            _characterFeelingsDebounceDispatcher.Debounce(() => { });
             OchkatzlSchwoafGameBorder.IsVisible = true;
-
-            _audioPlayerIntroSound.Play();
-            _audioPlayerIntroSound.PlaybackEnded += (sender, args) =>
+            if (_isFirstTimeOpened)
+            {
+                _audioPlayerIntroSound.Play();
+                _audioPlayerIntroSound.PlaybackEnded += AudioPlayerIntroSoundOnPlaybackEnded;
+            }
+            else
             {
                 CharacterHeartRegenerate();
+                DebounceCharacterFeelings();
                 _audioBackground.Loop = true;
                 _audioBackground.Play();
-
-                LetSeppSpeak(
-                    GetRandomEntry(_audioPlayerGreeting));
-
-                
-            };
+            }
+            _isFirstTimeOpened = false;
+            _characterIsBusy = false;
             await FadeInScene();
+        }
 
+        private void AudioPlayerIntroSoundOnPlaybackEnded(object? sender, EventArgs e)
+        {
+
+            CharacterHeartRegenerate();
+
+            _audioBackground.Loop = true;
+            _audioBackground.Play();
+
+            LetSeppSpeak(
+                GetRandomEntry(_audioPlayerGreeting));
+            DebounceCharacterFeelings();
+            _audioPlayerIntroSound.PlaybackEnded -= AudioPlayerIntroSoundOnPlaybackEnded;
         }
 
         private async void HomeButton_OnClicked(object? sender, EventArgs e)
@@ -511,31 +584,29 @@ namespace SeppApp
 
         private async Task ChangeScene(string backgroundImage, string? backgroundSound)
         {
-            FeelingBubbleImage.Source = string.Empty;
-            _characterFeeling = CharacterFeelings.None;
-            CharacterHeartRegenerate();
-            _heartMinusDispatcher.Stop();
-
-            if (_audioBackground != null)
-            {
-                _audioBackground.Stop();
-            }
             BackgroundImage.Source = backgroundImage;
-            _characterIsBusy = true;
-            await FadeInScene();
-            CharacterHeartRegenerate();
-            _characterIsBusy = false;
+            await ChangeScene();
 
             if (backgroundSound != null)
             {
                 _audioBackground = CreateAudioPlayer(backgroundSound);
-                
                 _audioBackground.Loop = true;
                 _audioBackground.Play();
             }
-           
-            LetSeppSpeak(
-                GetRandomEntry(_audioPlayerGreeting));
+
+            LetSeppSpeak(GetRandomEntry(_audioPlayerGreeting));
+        }
+
+        private async Task ChangeScene()
+        {
+            FeelingBubbleImage.Source = string.Empty;
+            _characterFeeling = CharacterFeelings.None;
+            CharacterHeartRegenerate();
+            _heartMinusDispatcher.Stop();
+            _audioBackground.Stop();
+            _characterIsBusy = true;
+            await FadeOutScene();
+            CharacterHeartRegenerate();
         }
 
 
@@ -562,20 +633,69 @@ namespace SeppApp
 
         private void ImprintButton_OnClicked(object? sender, EventArgs e)
         {
+            PrepareLeavePage();
             this.Navigation.PushAsync(new ImpressumPage());
         }
 
         private void DataPrivacyButton_OnClicked(object? sender, EventArgs e)
         {
+            PrepareLeavePage();
             this.Navigation.PushAsync(new DataPrivacyPage());
         }
 
         private async void OchkatzlschwafGameButton_OnClicked(object? sender, EventArgs e)
         {
+            PrepareLeavePage();
+            await ChangeScene();
+
+            if (AppSettings.AreAdsEnabled)
+            {
+                await _redValleyInterstitualAdService.ShowAd(() =>
+                {
+                    IsInterstitualAdShowing = false;
+                });
+            }
+            
+            await this.Navigation.PushAsync(Resolver.Resolve<GameOachKatzlSchwoafPage>());
+        }
+
+        private void PrepareLeavePage()
+        {
+            _heartMinusDispatcher.Stop();
             HomeButtonBorder.IsVisible = true;
             OchkatzlSchwoafGameBorder.IsVisible = false;
+            _audioBackground.Stop();
+            this._characterFeelingsDebounceDispatcher.Debounce(() => { });
+        }
 
-            await ChangeScene("background_oachkatzlschwoaf_game.png", "background_sound_wiese.mp3");
+        private void ChangeBuyableItemsState(AppUserSettings appUserSettings)
+        {
+            if (appUserSettings.Coins < ItemPrices.LimoPrice)
+            {
+                ItemLimoImageButton.Source = ImageSource.FromFile("icon_drink_limo_disabled.png");
+            }
+            else
+            {
+                ItemLimoImageButton.Source = ImageSource.FromFile("icon_drink_limo.png");
+            }
+
+            if (appUserSettings.Coins < ItemPrices.LeberkaeseSemmelPrice)
+            {
+                ItemLeberkaeseSemmelImageButton.Source = ImageSource.FromFile("icon_essen_leberkaese_semmel_disabled.png");
+            }
+            else
+            {
+                ItemLeberkaeseSemmelImageButton.Source = ImageSource.FromFile("icon_essen_leberkaese_semmel.png");
+            }
+
+            if (appUserSettings.Coins < ItemPrices.WeißwurstMitKetchupPrice)
+            {
+                ItemWeißwurstMitKetchupImageButton.Source = ImageSource.FromFile("icon_essen_weisswurst_mit_ketchup_disabled.png");
+            }
+            else
+            {
+                ItemWeißwurstMitKetchupImageButton.Source = ImageSource.FromFile("icon_essen_weisswurst_mit_ketchup.png");
+            }
         }
     }
 

@@ -332,6 +332,34 @@ liche Schäden, die durch den Gebrauch unvollständiger oder fehlerhafter Dateni
   <data name="LabelGameHintOachkatzlSchwoaf" xml:space="preserve">
     <value>Tippe auf das Eichhörnchen, um das Spiel zu starten. Sepp spricht das Wort zuerst korrekt aus – hör genau hin! Dann bist du dran: Sprich das Wort so exakt wie möglich nach, um möglichst viele Punkte zu sammeln.</value>
   </data>
+  <data name="LabelGameHintOachkatzlSchwoafBad" xml:space="preserve">
+    <value>❌ Leider keine Belohnung – 0 Münzen
+
+Das war wohl nicht dein Tag... Keine Münzen diesmal, aber Kopf hoch – beim nächsten Versuch kannst du zeigen, was du drauf hast! 
+
+Tippe einfach auf das Eichhörnchen, um eine neue Runde zu starten.</value>
+  </data>
+  <data name="LabelGameHintOachkatzlSchwoafGood" xml:space="preserve">
+    <value>🥈 Gut gespielt – 10 Münzen
+
+Starke Leistung! Du warst nah dran an der Spitze. Für deinen Einsatz erhältst du 10 Münzen. 
+
+Tippe auf das Eichhörnchen, wenn du gleich nochmal dein Können beweisen willst!</value>
+  </data>
+  <data name="LabelGameHintOachkatzlSchwoafSolid" xml:space="preserve">
+    <value>🥉 Solide Runde – 10 Münzen
+
+Nicht schlecht! Du hast dich wacker geschlagen. Es gibt 10 Münzen für deine Mühe – bleib dran, Übung macht den Champion! 
+
+Tippe auf das Eichhörnchen, wenn du gleich nochmal dein Können beweisen willst!</value>
+  </data>
+  <data name="LabelGameHintOachkatzlSchwoafTop" xml:space="preserve">
+    <value>🥇 Top-Leistung – 20 Münzen
+
+Wow! Du hast das Spiel gemeistert wie ein Profi. Deine Skills sind beeindruckend – dafür gibt’s satte 20 Münzen als Belohnung. 
+
+Tippe nochmal auf das Eichhörnchen, um direkt in die nächste Runde zu starten!</value>
+  </data>
   <data name="LabelGameInstructions" xml:space="preserve">
     <value>Spielanleitung:</value>
   </data>

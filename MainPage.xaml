@@ -3,53 +3,65 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SeppApp.MainPage"
              >
-    <Grid RowDefinitions="*, Auto" ColumnDefinitions="*">
-        <Image x:Name="BackgroundImage" Grid.RowSpan="2"  Source="background_wiese.png" Aspect="Fill"></Image>
+    <Grid RowDefinitions="Auto, Auto,*" ColumnDefinitions="*">
+        <Image x:Name="BackgroundImage" Grid.RowSpan="3"  Source="background_wiese.png" Aspect="Fill"></Image>
 
-
-        <Label Grid.Row="1" TextColor="White" x:Name="RecognizedText" />
-
-        <HorizontalStackLayout VerticalOptions="Start" HorizontalOptions="Start" Margin="5">
-            <Border  HeightRequest="80"
-                     WidthRequest="80"
+        <HorizontalStackLayout 
+            Grid.Row="0"
+            VerticalOptions="Start" HorizontalOptions="Start" Margin="5">
+            <Border  HeightRequest="70"
+                     WidthRequest="70"
                      BackgroundColor="#604F3F"
-                     Margin="5"
+                     Margin="5,5,2,2"
             >
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="25" />
                 </Border.StrokeShape>
-                <ImageButton Source="icon_essen_leberkaese_semmel" Clicked="Leberkaese_Clicked" />
+                <ImageButton x:Name="ItemLeberkaeseSemmelImageButton" Source="icon_essen_leberkaese_semmel" Clicked="Leberkaese_Clicked" />
             </Border>
-            <Border  HeightRequest="80"
-                     WidthRequest="80"
+            <Border  HeightRequest="70"
+                     WidthRequest="70"
                      BackgroundColor="#604F3F"
-                     Margin="5"
+                     Margin="5,5,2,2"
             >
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="25" />
                 </Border.StrokeShape>
-                <ImageButton Source="icon_essen_weisswurst_mit_ketchup" Clicked="WeisswurstMitKetchup_Clicked" />
+                <ImageButton x:Name="ItemWeißwurstMitKetchupImageButton" Source="icon_essen_weisswurst_mit_ketchup" Clicked="WeisswurstMitKetchup_Clicked" />
             </Border>
-            <Border  HeightRequest="80"
-                     WidthRequest="80"
+            <Border  HeightRequest="70"
+                     WidthRequest="70"
                      BackgroundColor="#604F3F"
-                     Margin="5"
+                     Margin="5,5,2,2"
             >
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="25" />
                 </Border.StrokeShape>
-                <ImageButton Source="icon_drink_limo" Clicked="Limo_OnClicked" />
+                <ImageButton x:Name="ItemLimoImageButton" Source="icon_drink_limo" Clicked="Limo_OnClicked" />
             </Border>
 
         </HorizontalStackLayout>
 
+        <Image x:Name="CharacterHeart" 
+               Grid.Row="1"
+               Source="heart_transparent" HeightRequest="50" HorizontalOptions="End" VerticalOptions="Start" Margin="5,5,10,5" ></Image>
 
-        <Image x:Name="CharacterHeart" Source="heart_transparent" HeightRequest="50" HorizontalOptions="End" VerticalOptions="Start" Margin="20" ></Image>
-        <VerticalStackLayout VerticalOptions="Start" 
+        <Label Grid.Row="1" TextColor="White" x:Name="RecognizedText" />
+
+        
+        <Border Grid.Row="0" VerticalOptions="Start" Margin="10" HorizontalOptions="End">
+            <HorizontalStackLayout>
+                <Image Source="icon_bavaria_coin.png" HeightRequest="40" VerticalOptions="Center" Margin="5" HorizontalOptions="End" ></Image>
+                <Label x:Name="CoinLabel" Margin="10,5,10,5" MinimumWidthRequest="50" HorizontalTextAlignment="End" Text=""></Label>
+            </HorizontalStackLayout>
+        </Border>
+        <VerticalStackLayout 
+            Grid.Row="1"
+            VerticalOptions="Start" 
                              HorizontalOptions="Start" 
                              BackgroundColor="Transparent"
                              WidthRequest="100"
-                             Margin="5, 100"
+                             Margin="5, 5"
                              >
 
             <Border  HeightRequest="80"
@@ -115,12 +127,11 @@
 
         </VerticalStackLayout>
 
-
-        <Grid Grid.Row="0" RowSpan="2" Grid.RowDefinitions="Auto, *"
+        <Grid Grid.Row="2" Grid.RowDefinitions="Auto, *"
              >
 
             <ImageButton Grid.Row="1" x:Name="CharacterImage" 
-                         Clicked="ImageButton_OnClicked" 
+                         Clicked="CharacterButton_OnClicked" 
                          Aspect="AspectFit" 
                          WidthRequest="300" 
                          Margin="50, 100, 0,0"
@@ -131,14 +142,14 @@
                          VerticalOptions="End"
             />
             <Image Grid.Row="0" x:Name="FeelingBubbleImage"
-                   VerticalOptions="End"
+                   VerticalOptions="Start"
                    WidthRequest="200"
-                   Margin="0,200"
+                   Margin="0"
                    HorizontalOptions="End"
             />
         </Grid>
         
-        <HorizontalStackLayout VerticalOptions="End" HorizontalOptions="Start" Margin="0">
+        <HorizontalStackLayout Grid.Row="2" VerticalOptions="End" HorizontalOptions="Start" Margin="0">
             <Border  HeightRequest="60"
                      WidthRequest="60"
                      BackgroundColor="#604F3F"
@@ -161,7 +172,7 @@
             </Border>
         </HorizontalStackLayout>
         <Button BackgroundColor="Black" 
-                Grid.RowSpan="2" Opacity="1" 
+                Grid.RowSpan="3" Opacity="1" 
                 CornerRadius="0"
                 x:Name="FadeInBorder" Clicked="FadeInBorder_OnClicked"></Button>
     </Grid>
