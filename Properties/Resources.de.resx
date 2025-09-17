@@ -133,12 +133,12 @@
     <value>Einwilligung widerrufen</value>
   </data>
   <data name="DataPrivacyMainText" xml:space="preserve">
-    <value>Datenschutzerklärung der Red Valley Software GmbH für die App "Sepp App"
+    <value>Datenschutzerklärung der Red Valley Software GmbH für die App "An Sepp sei App"
 
 Stand: September 2025
 
 Der Schutz Ihrer persönlichen Daten ist uns ein wichtiges Anliegen. 
-Diese Datenschutzerklärung informiert Sie über die Verarbeitung Ihrer personenbezogenen Daten im Zusammenhang mit der Nutzung der App „Sepp App“ 
+Diese Datenschutzerklärung informiert Sie über die Verarbeitung Ihrer personenbezogenen Daten im Zusammenhang mit der Nutzung der App „An Sepp sei App“ 
 gemäß den geltenden Datenschutzgesetzen:
 
 - Datenschutz-Grundverordnung (DSGVO) der EU
@@ -364,7 +364,7 @@ Tippe nochmal auf das Eichhörnchen, um direkt in die nächste Runde zu starten!
     <value>Spielanleitung:</value>
   </data>
   <data name="MainPageTitle" xml:space="preserve">
-    <value>Sepp App</value>
+    <value>An Sepp sei App</value>
   </data>
   <data name="SplashWelcome" xml:space="preserve">
     <value>Willkommen zu Talking Sepp Pro, die App startet sofort ...</value>

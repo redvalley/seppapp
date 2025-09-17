@@ -11,14 +11,14 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>Sepp App</ApplicationTitle>
+		<ApplicationTitle>An Sepp sei App</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.redvalley-software.seppapp</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
-		<ApplicationVersion>1001</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
+		<ApplicationVersion>1002</ApplicationVersion>
 
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>			

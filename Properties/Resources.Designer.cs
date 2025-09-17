@@ -106,16 +106,16 @@ namespace SeppApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Privacy Policy of Red Valley Software GmbH for the App “Sepp App”  
+        ///   Looks up a localized string similar to Privacy Policy of Red Valley Software GmbH for the App “An Sepp sei App”  
         ///Effective Date: September 2025
         ///
         ///Protecting your personal data is a key concern for us.  
-        ///This privacy policy informs you about the processing of your personal data in connection with the use of the “Sepp App” in accordance with applicable data protection laws:
+        ///This privacy policy informs you about the processing of your personal data in connection with the use of the “An Sepp sei App” in accordance with applicable data protection laws:
         ///
         ///- EU General Data Protection Regulation (GDPR)  
         ///- Revised Swiss Data Protection Act (revDSG)  
         ///- UK GDPR and Data Protection Act 2018  
-        ///- Privacy and Electronic Communicati [rest of string was truncated]&quot;;.
+        ///- Privacy and Electron [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DataPrivacyMainText {
             get {
@@ -233,7 +233,7 @@ namespace SeppApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sepp App.
+        ///   Looks up a localized string similar to An Sepp sei App.
         /// </summary>
         internal static string MainPageTitle {
             get {
