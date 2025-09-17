@@ -113,14 +113,17 @@ namespace SeppApp
             switch (_characterFeeling)
             {
                 case CharacterFeelings.Thirsty:
+                    FeelingBubbleImage.IsVisible = true;
                     FeelingBubbleImage.Source = ImageSource.FromFile("feeling_bubble_limo.png");
                     LetSeppSpeak(_audioPlayerThirsty);
                     break;
                 case CharacterFeelings.Hungry:
+                    FeelingBubbleImage.IsVisible = true;
                     FeelingBubbleImage.Source = ImageSource.FromFile("feeling_bubble_leberkaesesemmel.png");
                     LetSeppSpeak(_audioPlayerHungry);
                     break;
                 case CharacterFeelings.Bored:
+                    FeelingBubbleImage.IsVisible = true;
                     FeelingBubbleImage.Source = ImageSource.FromFile("feeling_bubble_bored.png");
                     LetSeppSpeak(_audioPlayerBored);
                     break;
@@ -487,7 +490,7 @@ namespace SeppApp
 
         private void FeelingFulFilled()
         {
-            FeelingBubbleImage.Source = string.Empty;
+            FeelingBubbleImage.IsVisible = false;
             _characterFeeling = CharacterFeelings.None;
             CharacterHeartRegenerate();
             _heartMinusDispatcher.Stop();
@@ -531,6 +534,7 @@ namespace SeppApp
             {
                 _audioPlayerSchnarchen.Stop();
                 _characterState = CharacterStates.Awake;
+                FeelingBubbleImage.IsVisible = false;
             }
 
         }
@@ -618,7 +622,7 @@ namespace SeppApp
 
         private async Task ChangeScene()
         {
-            FeelingBubbleImage.Source = string.Empty;
+            FeelingBubbleImage.IsVisible = false;
             _characterFeeling = CharacterFeelings.None;
             CharacterHeartRegenerate();
             _heartMinusDispatcher.Stop();
