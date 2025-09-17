@@ -25,8 +25,6 @@ public partial class SplashPage : ContentPage
 
         this.LabelSplashWelcomePro.IsVisible = false;
         this.LabelSplashWelcome.IsVisible = true;
-
-        this.ImageTalkingSeppPro.IsVisible = false;
         this.ImageTalkingSepp.IsVisible = true;
     }
 

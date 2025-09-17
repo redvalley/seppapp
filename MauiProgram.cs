@@ -1,4 +1,5 @@
-﻿using Plugin.AdMob;
+﻿using CommunityToolkit.Maui;
+using Plugin.AdMob;
 using Plugin.AdMob.Configuration;
 using RedValley;
 using RedValley.Helper;
@@ -14,7 +15,8 @@ namespace SeppApp
         /// <param name="mauiAppBuilder">The <see cref="MauiAppBuilder"/> instance for which this method should used.</param>
         /// <param name="configureDelegate">The delegate for configuring the <see cref="IServiceCollection"/> that will be used
         /// to construct the <see cref="IServiceProvider"/>.</param>
-        public static MauiAppBuilder ConfigureServices(this MauiAppBuilder mauiAppBuilder, Action<MauiAppBuilder, IServiceCollection> configureDelegate)
+        public static MauiAppBuilder ConfigureServices(this MauiAppBuilder mauiAppBuilder,
+            Action<MauiAppBuilder, IServiceCollection> configureDelegate)
         {
             configureDelegate(mauiAppBuilder, mauiAppBuilder.Services);
             return mauiAppBuilder;
@@ -37,12 +39,10 @@ namespace SeppApp
                         services.AddViewModels();
                         services.AddPages();
                     }))
-                    .UseMauiApp<App>();
-
-                builder = builder.UseAdMob(automaticallyAskForConsent: false);
-                builder = builder.ConfigureFonts(fonts => {
-                       fonts.AddFont("Fredoka-Medium.ttf", "Fredoka-Medium");
-                });
+                    .UseMauiApp<App>()
+                    .UseMauiCommunityToolkit()
+                    .UseAdMob(automaticallyAskForConsent: false)
+                    .ConfigureFonts(fonts => { fonts.AddFont("Fredoka-Medium.ttf", "Fredoka-Medium"); });
 
                 var mauiApp = builder.Build();
                 Resolver.RegisterServiceProvider(mauiApp.Services);

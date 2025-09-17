@@ -36,11 +36,15 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Color Valley</string>
+	<string>An Sepp sei App</string>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
-	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-6864374918270893~2514988248</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>SpeechToText requires speech recognition usage</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>SpeechToText requires microphone usage</string>
+    <key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-6864374918270893~6965162629</string>
 	<key>GADIsAdManagerApp</key>
 	<true/>
 	<key>SKAdNetworkItems</key>
