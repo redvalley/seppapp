@@ -84,8 +84,7 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
             ShouldReportPartialResults = false,
             
         }, CancellationToken.None);
-        await Task.Delay(5000, cancellationToken);
-        await _speechToText.StopListenAsync(CancellationToken.None);
+
     }
 
     private void OnRecognitionTextCompleted(object? sender, SpeechToTextRecognitionResultCompletedEventArgs e)
