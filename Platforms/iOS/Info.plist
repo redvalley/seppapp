@@ -40,9 +40,15 @@
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
     <key>NSSpeechRecognitionUsageDescription</key>
-    <string>SpeechToText requires speech recognition usage</string>
+    <string>This app uses speech recognition to create an interactive experience for the players. In some game rounds, the character “Sepp” pronounces a word or phrase. 
+        Players are then invited to repeat it aloud. Speech recognition is used to analyze the spoken response and provide feedback based on pronunciation accuracy. 
+        No audio is stored or shared.</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>SpeechToText requires microphone usage</string>
+    <string>This app uses the microphone exclusively for speech recognition during gameplay. 
+        Players are invited to repeat words spoken by the character “Sepp” as part of a language-learning challenge. 
+        The microphone input is analyzed locally to assess pronunciation accuracy and award points. No audio is recorded, stored, or transmitted.</string>
+    <key>NSUserTrackingUsageDescription</key>
+    <string>This identifier will be used to deliver personalized ads to you.</string>
     <key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-6864374918270893~6965162629</string>
 	<key>GADIsAdManagerApp</key>

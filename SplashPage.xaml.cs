@@ -1,15 +1,19 @@
+
 using Plugin.AdMob.Services;
 using RedValley;
 using RedValley.Helper;
 using RedValley.Mobile.Services;
-using RedValley.Settings;
+
+#if IOS
+using AppTrackingTransparency;
+using UIKit;
+#endif
 
 namespace SeppApp;
 
 public partial class SplashPage : ContentPage
 {
     private bool _isMainPageShowing = false;
-
 
     private readonly IAdConsentService? _adConsentService = null;
     private readonly IRedValleyAppOpenAdService _redValleyAppOpenAdService;
@@ -39,7 +43,10 @@ public partial class SplashPage : ContentPage
 
             if (!AppSettings.AreAdsEnabled)
             {
-                await ShowMainPageWithoutAd();
+                await HandleAppTrackingAndConsent(async ()=>
+                {
+                    await ShowMainPageWithoutAd();
+                });
                 return;
             }
 
@@ -49,29 +56,56 @@ public partial class SplashPage : ContentPage
             {
                 currentSettings.IsGameStartedFirstTime = false;
                 currentSettings.Save();
-                await ShowMainPageWithoutAd();
+                
+                await HandleAppTrackingAndConsent(async ()=>
+                {
+                    await ShowMainPageWithoutAd();
+                });
             }
             else
             {
-                await ShowMainPageAfterAd();
+                await HandleAppTrackingAndConsent(async ()=>
+                {
+                    await ShowMainPageAfterAd();
+                });
             }
         }, Logging.CreateLogger(Logging.CategoryBootstrapping));
         
     }
 
-    private async Task ShowMainPageAfterAd()
+    private async Task HandleAppTrackingAndConsent(Func<Task> completed)
+    {
+#if IOS
+        while (UIApplication.SharedApplication.ApplicationState != UIApplicationState.Active)
+        {
+            await Task.Delay(2000);
+        }
+
+        await ATTrackingManager.RequestTrackingAuthorizationAsync();
+        CheckAdConsent();
+        await completed();
+#else
+        CheckAdConsent();
+        await completed();
+#endif
+
+    }
+
+    private void CheckAdConsent()
     {
         if (_adConsentService != null && !_adConsentService.CanRequestAds())
         {
             _adConsentService.LoadAndShowConsentFormIfRequired();
         }
+    }
 
+    private async Task ShowMainPageAfterAd()
+    {
         await Task.Run(async () =>
         {
             await Task.Delay(5000);
             await MainThread.InvokeOnMainThreadAsync(async () =>
             {
-                
                 await this._redValleyAppOpenAdService.ShowAd(ShowMainPage);
             });
         });
