@@ -4,7 +4,7 @@
 		<activity android:name="com.google.android.gms.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:theme="@android:style/Theme.Translucent" />
 		<meta-data
 			android:name="com.google.android.gms.ads.APPLICATION_ID"
-			android:value="ca-app-pub-3940256099942544~3347511713" />
+			android:value="ca-app-pub-6864374918270893~7408015750" />
 	</application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />

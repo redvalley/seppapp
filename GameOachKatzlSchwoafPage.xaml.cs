@@ -77,13 +77,22 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
             return;
         }
 
-
+        
         _speechToText.RecognitionResultCompleted += OnRecognitionTextCompleted;
-        await _speechToText.StartListenAsync(new SpeechToTextOptions { Culture = CultureInfo.CurrentCulture, ShouldReportPartialResults = true }, CancellationToken.None);
+        await _speechToText.StartListenAsync(new SpeechToTextOptions { 
+            Culture = CultureInfo.CurrentCulture, 
+            ShouldReportPartialResults = false,
+            
+        }, CancellationToken.None);
 
     }
 
     private void OnRecognitionTextCompleted(object? sender, SpeechToTextRecognitionResultCompletedEventArgs e)
+    {
+        RecognizeOachkatzlSchwoaf(e.RecognitionResult);
+    }
+
+    private void RecognizeOachkatzlSchwoaf(SpeechToTextResult result)
     {
         _speechToText.RecognitionResultCompleted -= OnRecognitionTextCompleted;
 
@@ -91,8 +100,8 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
         IAudioPlayer? audioPlayerGameResult = null;
         GameHintBorder.IsVisible = true;
         _isOachKatzlSchwoafRecognized = true;
-        if (e.RecognitionResult?.Text != null &&
-            e.RecognitionResult.Text.ContainsAny("oachkatzlschwoaf","oachkatzelschwoaf", "oarchkatzelschwoaf", "ohrkatzelschworf", "ohrkatzlschworf"))
+        if (result?.Text != null &&
+            result.Text.ContainsAny("oachkatzlschwoaf","oachkatzelschwoaf", "oarchkatzelschwoaf", "ohrkatzelschworf", "ohrkatzlschworf"))
         {
             this.BackgroundImage.Source = ImageSource.FromFile("oachkatzl_happy.png");
             userSettings.Coins += 20;
@@ -100,9 +109,9 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
             audioPlayerGameResult = _audioPlayerGameResultSuper;
             
         }
-        else if ((e.RecognitionResult?.Text.ContainsAny("katzel", "katzl")??false) &&
-                 (e.RecognitionResult?.Text?.ContainsAny("schwoaf", "schweif", "schworf") ?? false)
-                 )
+        else if ((result?.Text.ContainsAny("katzel", "katzl")??false) &&
+                 (result?.Text?.ContainsAny("schwoaf", "schweif", "schworf") ?? false)
+                )
 
         {
             this.BackgroundImage.Source = ImageSource.FromFile("oachkatzl_ok.png");
@@ -110,8 +119,8 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
             GameHintLabel.Text = Properties.Resources.LabelGameHintOachkatzlSchwoafGood;
             audioPlayerGameResult = _audioPlayerGameResultGood;
         }
-        else if (e.RecognitionResult?.Text != null &&
-                 (e.RecognitionResult.Text.ContainsAny("oach", "katzl", "katzel", "schwoaf", "schweif")))
+        else if (result?.Text != null &&
+                 (result.Text.ContainsAny("oach", "katzl", "katzel", "schwoaf", "schweif")))
         {
             this.BackgroundImage.Source = ImageSource.FromFile("oachkatzl_ok.png");
             userSettings.Coins += 5;

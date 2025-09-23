@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net9.0-android;net9.0-ios</TargetFrameworks>
+		<TargetFrameworks>net9.0-ios</TargetFrameworks>
 
 		<OutputType>Exe</OutputType>
 		<RootNamespace>SeppApp</RootNamespace>
@@ -17,16 +17,36 @@
 		<ApplicationId>com.redvalley-software.seppapp</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
-		<ApplicationVersion>1002</ApplicationVersion>
-
+		<ApplicationDisplayVersion>1.0.3</ApplicationDisplayVersion>
+		<ApplicationVersion>1003</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>			
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		<NeutralLanguage>en</NeutralLanguage>
-		<DefineConstants>STANDARD_VERSION</DefineConstants>
 	</PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-ios|AnyCPU'">
+        <MtouchLink>None</MtouchLink>
+        <UseInterpreter>true</UseInterpreter>
+        <ProvisioningType>manual</ProvisioningType>
+        <CodesignKey>Apple Distribution: Red Valley Software GmbH (L678J3PV64)</CodesignKey>
+        <CodesignProvision>DistributionProfile RedValleySoftware SeppApp</CodesignProvision>
+        <DebugSymbols>true</DebugSymbols>
+        <CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-ios|AnyCPU'">
+        <CreatePackage>false</CreatePackage>
+        <CodesignKey>Apple Development: Rupert Eder (322YYJY2TQ)</CodesignKey>
+        <CodesignProvision>DevelopmentProfile RedValleySoftware SeppApp</CodesignProvision>
+        <MtouchDebug>True</MtouchDebug>
+        <CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
+    </PropertyGroup>
+
+    <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+        <BundleResource Include="Platforms\iOS\PrivacyInfo.xcprivacy" LogicalName="PrivacyInfo.xcprivacy" />
+    </ItemGroup>
+    
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.png" Color="#BE6100" />
@@ -50,10 +70,10 @@
 
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="12.1.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.90" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="12.2.0" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.110" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.6" />
-		<PackageReference Include="Microsoft.Maui.Controls.Core" Version="9.0.90" />
+		<PackageReference Include="Microsoft.Maui.Controls.Core" Version="9.0.110" />
 		<PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
 	</ItemGroup>
 
@@ -103,4 +123,18 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+    <Target Name="LinkWithSwift" DependsOnTargets="_ParseBundlerArguments;_DetectSdkLocations" BeforeTargets="_LinkNativeExecutable">
+        <PropertyGroup>
+            <_SwiftPlatform Condition="$(RuntimeIdentifier.StartsWith('iossimulator-'))">iphonesimulator</_SwiftPlatform>
+            <_SwiftPlatform Condition="$(RuntimeIdentifier.StartsWith('ios-'))">iphoneos</_SwiftPlatform>
+        </PropertyGroup>
+        <ItemGroup>
+            <_CustomLinkFlags Include="-L" />
+            <_CustomLinkFlags Include="/usr/lib/swift" />
+            <_CustomLinkFlags Include="-L" />
+            <_CustomLinkFlags Include="$(_SdkDevPath)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(_SwiftPlatform)" />
+            <_CustomLinkFlags Include="-Wl,-rpath" />
+            <_CustomLinkFlags Include="-Wl,/usr/lib/swift" />
+        </ItemGroup>
+    </Target>
 </Project>
