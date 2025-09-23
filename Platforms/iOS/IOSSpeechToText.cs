@@ -12,7 +12,8 @@ public class IOSSpeechRecognition : ISpeechRecognition
     private SFSpeechRecognizer speechRecognizer;
     private SFSpeechRecognitionTask recognitionTask;
 
-    public async Task<string> Listen(CultureInfo culture, IProgress<string> recognitionResult, CancellationToken cancellationToken)
+    public async Task<string> Listen(CultureInfo culture, IProgress<string> recognitionResult,
+        CancellationToken cancellationToken)
     {
         speechRecognizer = new SFSpeechRecognizer(NSLocale.FromLocaleIdentifier(culture.Name));
 
@@ -26,8 +27,13 @@ public class IOSSpeechRecognition : ISpeechRecognition
             throw new Exception("Permission denied");
         }
 
+        var audioSession = AVAudioSession.SharedInstance();
+        audioSession.SetCategory(AVAudioSessionCategory.PlayAndRecord, AVAudioSessionMode.Measurement, AVAudioSessionCategoryOptions.DuckOthers);
+        audioSession.SetActive(true, AVAudioSessionSetActiveOptions.NotifyOthersOnDeactivation);
+
         audioEngine = new AVAudioEngine();
         liveSpeechRequest = new SFSpeechAudioBufferRecognitionRequest();
+        liveSpeechRequest.ShouldReportPartialResults = true;
 
         // Toggle to use online or offline
         //if (OperatingSystem.IsIOSVersionAtLeast(13))
@@ -36,10 +42,8 @@ public class IOSSpeechRecognition : ISpeechRecognition
 
         var node = audioEngine.InputNode;
         var recordingFormat = node.GetBusOutputFormat(new UIntPtr(0));
-        node.InstallTapOnBus(new UIntPtr(0), 1024, recordingFormat, (buffer, _) =>
-        {
-            liveSpeechRequest.Append(buffer);
-        });
+        node.InstallTapOnBus(new UIntPtr(0), 1024, recordingFormat,
+            (buffer, _) => { liveSpeechRequest.Append(buffer); });
 
         audioEngine.Prepare();
         audioEngine.StartAndReturnError(out var error);
@@ -79,16 +83,25 @@ public class IOSSpeechRecognition : ISpeechRecognition
         });
 
         await using (cancellationToken.Register(() =>
+                     {
+                         StopRecording();
+                         taskResult.TrySetCanceled();
+                     }))
         {
-            StopRecording();
-            taskResult.TrySetCanceled();
-        }))
-        {
-            return await taskResult.Task;
+            try
+            {
+                return await taskResult.Task;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return string.Empty;
         }
     }
 
-    void StopRecording()
+    public void StopRecording()
     {
         audioEngine?.InputNode.RemoveTapOnBus(new UIntPtr(0));
         audioEngine?.Stop();

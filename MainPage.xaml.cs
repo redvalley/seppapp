@@ -349,7 +349,7 @@ namespace SeppApp
         {
             FadeInBorder.IsVisible = true;
             FadeInBorder.BackgroundColor = Colors.Black;
-            await FadeInBorder.BackgroundColorTo(Colors.Transparent, length: 5000);
+            await FadeInBorder.BackgroundColorTo(Colors.Transparent, length: 2000);
             FadeInBorder.IsVisible = false;
         }
 
@@ -357,7 +357,7 @@ namespace SeppApp
         {
             FadeInBorder.IsVisible = true;
             FadeInBorder.BackgroundColor = Colors.Transparent;
-            await FadeInBorder.BackgroundColorTo(Colors.Black, length: 5000);
+            await FadeInBorder.BackgroundColorTo(Colors.Black, length: 2000);
         }
 
         private async void LetSeppSleep()
@@ -715,7 +715,6 @@ namespace SeppApp
         {
             _isPageActive = false;
             _heartMinusDispatcher.Stop();
-            HomeButtonBorder.IsVisible = true;
             OchkatzlSchwoafGameBorder.IsVisible = false;
             _audioBackground.Stop();
             this._characterFeelingsDebounceDispatcher.Debounce(() => { });

@@ -62,14 +62,51 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
         _audioPlayerSayingOachkatzlSchwoaf.PlaybackEnded += AudioPlayerSayingOachkatzlSchwoafOnPlaybackEnded;
     }
 
-    private void AudioPlayerSayingOachkatzlSchwoafOnPlaybackEnded(object? sender, EventArgs e)
+    private async void AudioPlayerSayingOachkatzlSchwoafOnPlaybackEnded(object? sender, EventArgs e)
     {
-        StartListening(CancellationToken.None);
+        await StartListening(CancellationToken.None);
         _audioPlayerSayingOachkatzlSchwoaf.PlaybackEnded -= AudioPlayerSayingOachkatzlSchwoafOnPlaybackEnded;
     }
 
-    async Task StartListening(CancellationToken cancellationToken)
+    private async Task StartListening(CancellationToken cancellationToken)
     {
+                
+
+
+#if IOS
+        IOSSpeechRecognition iosSpeechRecognition = new IOSSpeechRecognition();
+        var isGranted = await iosSpeechRecognition.RequestPermissions();
+        if (!isGranted)
+        {
+            await Toast.Make(Properties.Resources.ToastErrorMicrophoneAccessMissing).Show(CancellationToken.None);
+            return;
+        }
+        
+        
+        Task waitTask = Task.Run(async () =>
+        {
+            try
+            {
+
+
+                await Task.Delay(5000);
+                iosSpeechRecognition.StopRecording();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        });
+
+        var cultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
+        var germanCultures = cultures.Where(culture => culture.Name.Contains("de-AT"));
+        var result = await iosSpeechRecognition.Listen(germanCultures.First(), new Progress<string>((result) =>
+            {
+                Console.WriteLine(result);
+            }), CancellationToken.None);
+        await waitTask;
+        RecognizeOachkatzlSchwoaf(new SpeechToTextResult(result, null));
+#else
         var isGranted = await _speechToText.RequestPermissions(cancellationToken);
         if (!isGranted)
         {
@@ -77,13 +114,6 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
             return;
         }
 
-
-#if IOS
-        IOSSpeechRecognition iosSpeechRecognition = new IOSSpeechRecognition(); 
-        await iosSpeechRecognition.Listen(CultureInfo.CurrentCulture, new Progress<string>((result) => { }),
-            CancellationToken.None);
-
-#else
         _speechToText.RecognitionResultCompleted += OnRecognitionTextCompleted;
         await _speechToText.StartListenAsync(new SpeechToTextOptions { 
             Culture = CultureInfo.CurrentCulture, 
