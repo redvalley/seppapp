@@ -329,6 +329,18 @@ Red Valley Software GmbH is particularly not liable for economic damages resulti
   <data name="ImpressumPageTitle" xml:space="preserve">
     <value>Imprint</value>
   </data>
+  <data name="LabelGameHintMaibaumkraxeln" xml:space="preserve">
+    <value>Tap left and right in quick succession – get Sepp up that "Maibaum" like a true Bavarian hero!</value>
+  </data>
+  <data name="LabelGameHintMaibaumKraxelnBad" xml:space="preserve">
+    <value>Phew… that was tough. Sepp needs a few more climbing lessons before the next Maypole! Just tap the screen to play again!</value>
+  </data>
+  <data name="LabelGameHintMaibaumKraxelnOk" xml:space="preserve">
+    <value>Not bad! Sepp held his ground – there’s still room to improve. Just tap the screen to play again!</value>
+  </data>
+  <data name="LabelGameHintMaibaumKraxelnSuper" xml:space="preserve">
+    <value>One, two, done! Sepp shot up that Maypole like lightning – brilliant job! Just tap the screen to play again!</value>
+  </data>
   <data name="LabelGameHintOachkatzlSchwoaf" xml:space="preserve">
     <value>Tap the squirrel to start the game.
 Sepp will pronounce the word correctly first — listen carefully! 

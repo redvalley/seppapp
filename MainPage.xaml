@@ -75,18 +75,6 @@
                 <ImageButton Source="icon_talk" HeightRequest="80" Clicked="TalkToSepp_OnClicked" />
             </Border>
 
-            <!--
-            <Border  HeightRequest="80"
-                     WidthRequest="80"
-                     BackgroundColor="#604F3F"
-                     Margin="5"
-                     x:Name="VolksfestButtonBorder"
-            >
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="25" />
-                </Border.StrokeShape>
-                <ImageButton Source="icon_volksfest" HeightRequest="80" Clicked="VolksfestButton_OnClicked" />
-            </Border>
 
             <Border  HeightRequest="80"
                      WidthRequest="80"
@@ -97,9 +85,9 @@
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="25" />
                 </Border.StrokeShape>
-                <ImageButton Source="icon_maibaum" HeightRequest="80" Clicked="MaibaumButton_OnClicked" />
+                <ImageButton Source="icon_maibaum_kraxeln_game" HeightRequest="80" Clicked="MaibaumKraxelnGameButton_OnClicked" />
             </Border>
-            -->
+
             <Border  HeightRequest="80"
                      WidthRequest="80"
                      BackgroundColor="#604F3F"

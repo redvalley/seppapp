@@ -36,6 +36,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<CompanySplashPage>();
         services.AddScoped<MainPage>();
         services.AddScoped<GameOachKatzlSchwoafPage>();
+        services.AddScoped<GameMaibaumKraxelnPage>();
     }
 
     public static void AddViewModels(this IServiceCollection services)

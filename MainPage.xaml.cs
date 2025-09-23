@@ -20,8 +20,10 @@ namespace SeppApp
         private IDispatcherTimer _characterAnimationTimer;
         private bool _isFirstTimeOpened = true;
         private bool _characterIsBusy = false;
+        private bool _isPageActive = false;
         private IDispatcherTimer _heartMinusDispatcher;
         public bool IsInterstitualAdShowing { get; set; }
+
 
         private List<string> _characterAnimationTalkingImageList =
         [
@@ -311,6 +313,16 @@ namespace SeppApp
 
         private void LetSeppDoSomething(IAudioPlayer player, List<string> imageList)
         {
+            if (!_isPageActive)
+            {
+                return;
+            }
+
+            if (_characterIsBusy)
+            {
+                return;
+            }
+
             _characterIsBusy = true;
             player.PlaybackEnded += LetSeppDoSomethingPlayerOnPlaybackEnded;
             player.Play();
@@ -549,6 +561,7 @@ namespace SeppApp
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            _isPageActive = true;
             var userSettings = AppUserSettings.Load();
 
             ChangeBuyableItemsState(userSettings);
@@ -682,8 +695,25 @@ namespace SeppApp
             await this.Navigation.PushAsync(Resolver.Resolve<GameOachKatzlSchwoafPage>());
         }
 
+        private async void MaibaumKraxelnGameButton_OnClicked(object? sender, EventArgs e)
+        {
+            PrepareLeavePage();
+            await ChangeScene();
+
+            if (AppSettings.AreAdsEnabled)
+            {
+                await _redValleyInterstitualAdService.ShowAd(() =>
+                {
+                    IsInterstitualAdShowing = false;
+                });
+            }
+
+            await this.Navigation.PushAsync(Resolver.Resolve<GameMaibaumKraxelnPage>());
+        }
+
         private void PrepareLeavePage()
         {
+            _isPageActive = false;
             _heartMinusDispatcher.Stop();
             HomeButtonBorder.IsVisible = true;
             OchkatzlSchwoafGameBorder.IsVisible = false;
@@ -720,6 +750,8 @@ namespace SeppApp
                 ItemWeißwurstMitKetchupImageButton.Source = ImageSource.FromFile("icon_essen_weisswurst_mit_ketchup.png");
             }
         }
+
+        
     }
 
 }

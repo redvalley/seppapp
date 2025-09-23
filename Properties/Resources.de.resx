@@ -329,6 +329,22 @@ liche Schäden, die durch den Gebrauch unvollständiger oder fehlerhafter Dateni
   <data name="ImpressumPageTitle" xml:space="preserve">
     <value>Impressum</value>
   </data>
+  <data name="LabelGameHintMaibaumkraxeln" xml:space="preserve">
+    <value>Zackig abwechselnd links und rechts tippen – hilf Sepp, dass er den Maibaum naufkommt wie a g’standns Mannsbuid!</value>
+  </data>
+  <data name="LabelGameHintMaibaumKraxelnBad" xml:space="preserve">
+    <value>Puh… des war zäh. Sepp braucht no a paar Kraxel-Übungen vorm nächsten Maibaum! 
+
+Einfach auf’n Bildschirm tippen, um nochmal zu spielen!</value>
+  </data>
+  <data name="LabelGameHintMaibaumKraxelnOk" xml:space="preserve">
+    <value>Ned schlecht! Sepp hat sich tapfer g’halten – a bissl Luft nach oben is no da. 
+Einfach auf’n Bildschirm tippen, um nochmal zu spielen!</value>
+  </data>
+  <data name="LabelGameHintMaibaumKraxelnSuper" xml:space="preserve">
+    <value>Super - g’schafft! Sepp war schnell wia da Blitz – des war spitze! 
+Einfach auf’n Bildschirm tippen, um nochmal zu spielen!</value>
+  </data>
   <data name="LabelGameHintOachkatzlSchwoaf" xml:space="preserve">
     <value>Tippe auf das Eichhörnchen, um das Spiel zu starten. Sepp spricht das Wort zuerst korrekt aus – hör genau hin! Dann bist du dran: Sprich das Wort so exakt wie möglich nach, um möglichst viele Punkte zu sammeln.</value>
   </data>

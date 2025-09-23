@@ -162,6 +162,42 @@ namespace SeppApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tap left and right in quick succession – get Sepp up that &quot;Maibaum&quot; like a true Bavarian hero!.
+        /// </summary>
+        internal static string LabelGameHintMaibaumkraxeln {
+            get {
+                return ResourceManager.GetString("LabelGameHintMaibaumkraxeln", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phew… that was tough. Sepp needs a few more climbing lessons before the next Maypole! Just tap the screen to play again!.
+        /// </summary>
+        internal static string LabelGameHintMaibaumKraxelnBad {
+            get {
+                return ResourceManager.GetString("LabelGameHintMaibaumKraxelnBad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not bad! Sepp held his ground – there’s still room to improve. Just tap the screen to play again!.
+        /// </summary>
+        internal static string LabelGameHintMaibaumKraxelnOk {
+            get {
+                return ResourceManager.GetString("LabelGameHintMaibaumKraxelnOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One, two, done! Sepp shot up that Maypole like lightning – brilliant job! Just tap the screen to play again!.
+        /// </summary>
+        internal static string LabelGameHintMaibaumKraxelnSuper {
+            get {
+                return ResourceManager.GetString("LabelGameHintMaibaumKraxelnSuper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tap the squirrel to start the game.
         ///Sepp will pronounce the word correctly first — listen carefully! 
         ///Then it&apos;s your turn: 

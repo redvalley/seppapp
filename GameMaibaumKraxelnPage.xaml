@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SeppApp.GameMaibaumKraxelnPage"
+             Title="GameMaibaumKraxelnPage"
+             xmlns:resources="clr-namespace:SeppApp.Properties"
+             >
+    <Grid RowDefinitions="Auto, Auto, *" ColumnDefinitions="*,*">
+        <Image x:Name="BackgroundImage" Grid.RowSpan="3" Grid.ColumnSpan="2"  Source="background_maibaumkraxeln_game.png" Aspect="Fill" />
+        <Border Grid.Row="0" VerticalOptions="Start" Grid.ColumnSpan="2" Margin="10" HorizontalOptions="End">
+            <HorizontalStackLayout>
+                <Image Source="icon_bavaria_coin.png" HeightRequest="40" VerticalOptions="Center" Margin="5" HorizontalOptions="End" ></Image>
+                <Label x:Name="CoinLabel" Margin="10,5,10,5" MinimumWidthRequest="50" HorizontalTextAlignment="End" Text=""></Label>
+            </HorizontalStackLayout>
+        </Border>
+        <Border Grid.Row="0" VerticalOptions="Start" Grid.ColumnSpan="2" Margin="10" HorizontalOptions="Start">
+            <HorizontalStackLayout>
+                <Image Source="icon_stop_watch.png" HeightRequest="40" VerticalOptions="Center" Margin="5" HorizontalOptions="End" ></Image>
+                <Label x:Name="StopWatchLabel" Margin="10,5,10,5" MinimumWidthRequest="50" HorizontalTextAlignment="End" Text=""></Label>
+            </HorizontalStackLayout>
+        </Border>
+        <Image x:Name="KraxelImage" Grid.ColumnSpan="2" WidthRequest="80" HeightRequest="100" Grid.RowSpan="3"  Source="maibaum_kraxeln_1.png" Aspect="AspectFit" 
+               VerticalOptions="End"
+               HorizontalOptions="Center"
+               />
+        <Border Grid.Row="1" Grid.ColumnSpan="2" x:Name="GameHintBorder" Style="{StaticResource HintBorder}">
+            <Label x:Name="GameHintLabel" Margin="10" Text="{x:Static resources:Resources.LabelGameHintMaibaumkraxeln }"></Label>
+        </Border>
+
+
+        <Button BackgroundColor="{StaticResource Quinary}" 
+                x:Name="TapLeftButton"
+                Grid.Column="0"
+                Margin="0" 
+                CornerRadius="0" Grid.Row="2" 
+                Clicked="LeftTappedKraxelnButton_OnClicked"></Button>
+
+        <Button BackgroundColor="{StaticResource Quinary}" 
+                x:Name="TapRightButton"
+                Grid.Column="1"
+                Margin="0" 
+                CornerRadius="0" Grid.Row="2" 
+                Clicked="RightTappedKraxelnButton_OnClicked"></Button>
+        
+
+        <Border  HeightRequest="80"
+                 WidthRequest="80"
+                 Grid.Row="2"
+                 BackgroundColor="#604F3F"
+                 Margin="5"
+                 x:Name="HomeButtonBorder"
+                 VerticalOptions="End"
+                 HorizontalOptions="Start"
+        >
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="25" />
+            </Border.StrokeShape>
+            <ImageButton Source="icon_home" HeightRequest="80" Clicked="HomeButton_OnClicked" />
+        </Border>
+        <Border BackgroundColor="Black" 
+                Grid.RowSpan="3" Grid.ColumnSpan="2" Opacity="1" 
+                
+                x:Name="FadeInBorder">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0" />
+            </Border.StrokeShape>
+        </Border>
+    </Grid>
+</ContentPage>
