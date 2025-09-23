@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace SeppApp;
 
-public class SpeechToTextImplementation : ISpeechRecognition
+public class IOSSpeechRecognition : ISpeechRecognition
 {
     private AVAudioEngine audioEngine;
     private SFSpeechAudioBufferRecognitionRequest liveSpeechRequest;

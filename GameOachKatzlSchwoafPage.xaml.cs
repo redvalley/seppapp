@@ -77,13 +77,21 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
             return;
         }
 
-        
+
+#if IOS
+        IOSSpeechRecognition iosSpeechRecognition = new IOSSpeechRecognition(); 
+        await iosSpeechRecognition.Listen(CultureInfo.CurrentCulture, new Progress<string>((result) => { }),
+            CancellationToken.None);
+
+#else
         _speechToText.RecognitionResultCompleted += OnRecognitionTextCompleted;
         await _speechToText.StartListenAsync(new SpeechToTextOptions { 
             Culture = CultureInfo.CurrentCulture, 
             ShouldReportPartialResults = false,
             
         }, CancellationToken.None);
+#endif
+
 
     }
 

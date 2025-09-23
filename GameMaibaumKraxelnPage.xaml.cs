@@ -119,7 +119,7 @@ public partial class GameMaibaumKraxelnPage : ContentPage
     {
         var backgroundImageHeight = BackgroundImage.Height;
         
-        if (_currentKraxelImageBottomMargin >= backgroundImageHeight - 125)
+        if (_currentKraxelImageBottomMargin >= backgroundImageHeight - 150)
         {
             GameHintBorder.IsVisible = true;
             _gameTimer.Stop();
