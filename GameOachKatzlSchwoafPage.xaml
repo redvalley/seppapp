@@ -17,7 +17,7 @@
         <Border Grid.Row="1" x:Name="GameHintBorder" Style="{StaticResource HintBorder}">
             <Label x:Name="GameHintLabel" Margin="10" Text="{x:Static resources:Resources.LabelGameHintOachkatzlSchwoaf }"></Label>
         </Border>
-
+        <Image x:Name="TalkNowIcon" Grid.Row="1" HeightRequest="80" Aspect="AspectFill" Source="icon_talk_now" />
         
 
 

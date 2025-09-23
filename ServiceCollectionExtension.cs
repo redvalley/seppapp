@@ -2,6 +2,7 @@
 using Plugin.AdMob.Services;
 using Plugin.Maui.Audio;
 using RedValley.Mobile.Services;
+using SeppApp.Services;
 
 namespace SeppApp;
 
@@ -25,9 +26,9 @@ public static class ServiceCollectionExtension
             services.AddSingleton<IRedValleyInterstitualAdService>(new DummyRedValleyInterstitualAdService());
         }
 
-
         services.AddSingleton<ISpeechToText>(SpeechToText.Default);
         services.AddSingleton<IAudioManager>(AudioManager.Current);
+        services.AddSingleton<ISpeechToTextService, SpeechToTextService>();
     }
 
     public static void AddPages(this IServiceCollection services)

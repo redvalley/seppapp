@@ -7,13 +7,15 @@ using RedValley.Helper;
 using RedValley.Mobile.Services;
 using SeppApp.Models;
 using System.Globalization;
+using RedValley.Extensions;
+using SeppApp.Services;
 using TalkingSepp.Models;
 
 namespace SeppApp
 {
     public partial class MainPage : ContentPage
     {
-        private readonly ISpeechToText _speechToText;
+        private readonly ISpeechToTextService _speechToTextService;
         private readonly IAudioManager _audioManager;
         private readonly IRedValleyInterstitualAdService _redValleyInterstitualAdService;
 
@@ -88,10 +90,10 @@ namespace SeppApp
         private const long SnoringAnimiationInterval = 2000;
         private const long DrinkingEatingAnimiationInterval = 1000;
 
-        public MainPage(ISpeechToText speechToText, IAudioManager audioManager, IRedValleyInterstitualAdService redValleyInterstitualAdService)
+        public MainPage(ISpeechToTextService speechToTextService, IAudioManager audioManager, IRedValleyInterstitualAdService redValleyInterstitualAdService)
         {
 
-            _speechToText = speechToText;
+            _speechToTextService = speechToTextService;
             _audioManager = audioManager;
             _redValleyInterstitualAdService = redValleyInterstitualAdService;
 
@@ -224,54 +226,33 @@ namespace SeppApp
 
         }
 
-        async Task StartListening(CancellationToken cancellationToken)
+        private async Task StartListening()
         {
-            _speechToText.RecognitionResultCompleted += OnRecognitionTextCompleted;
-            var isGranted = await _speechToText.RequestPermissions(cancellationToken);
-            if (!isGranted)
+            await _speechToTextService.StartListeningAsync(CancellationToken.None, recognizedText =>
+            {
+                RecognizeTextAndReplay(recognizedText);
+            }, async () =>
             {
                 await Toast.Make(Properties.Resources.ToastErrorMicrophoneAccessMissing).Show(CancellationToken.None);
-                return;
-            }
-
-            
-            await _speechToText.StartListenAsync(new SpeechToTextOptions { Culture = CultureInfo.CurrentCulture, ShouldReportPartialResults = true }, CancellationToken.None);
-
+            }, " ");
         }
 
-        private async void OnRecognitionTextCompleted(object? sender, SpeechToTextRecognitionResultCompletedEventArgs e)
-        {
-            _speechToText.RecognitionResultCompleted -= OnRecognitionTextCompleted;
-            if (_characterIsBusy)
-            {
-                return;
-            }
-
-            RecognizeTextAndReplay(e);
-        }
-
-        private void RecognizeTextAndReplay(SpeechToTextRecognitionResultCompletedEventArgs e)
+        private void RecognizeTextAndReplay(string recognizedText)
         {
             DebounceCharacterFeelings();
 
+            if (recognizedText.IsEmpty())
+            {
+                return;
+            }
 
-            if (e.RecognitionResult?.Text != null &&
-                (e.RecognitionResult.Text.Contains("hallo", StringComparison.InvariantCultureIgnoreCase) ||
-                 e.RecognitionResult.Text.Contains("servus", StringComparison.InvariantCultureIgnoreCase)))
+            if (recognizedText.ContainsAny("hallo", "servus"))
             {
                 CharacterHeartRegenerate();
                 LetSeppSpeak(
                     GetRandomEntry(_audioPlayerGreeting));
             }
-            else if (e.RecognitionResult?.Text != null &&
-                       (e.RecognitionResult.Text.Contains("wie geht es dir", StringComparison.InvariantCultureIgnoreCase) ||
-                        e.RecognitionResult.Text.Contains("wie geht's dir", StringComparison.InvariantCultureIgnoreCase) ||
-                        e.RecognitionResult.Text.Contains("how are you", StringComparison.InvariantCultureIgnoreCase) ||
-                        e.RecognitionResult.Text.Contains("mir geht's da", StringComparison.InvariantCultureIgnoreCase) ||
-                        e.RecognitionResult.Text.Contains("wia geht's da", StringComparison.InvariantCultureIgnoreCase) ||
-                        e.RecognitionResult.Text.Contains("wie geht's da", StringComparison.InvariantCultureIgnoreCase)
-                        )
-                       )
+            else if (recognizedText.ContainsAny("wie geht es dir", "how are you", "wie geht's dir", "mir geht's da", "wia geht's da", "wie geht's da"))
             {
                 CharacterHeartRegenerate();
                 LetSeppSpeak(
@@ -282,7 +263,6 @@ namespace SeppApp
                 CharacterHeartRegenerate();
                 LetSeppSpeak(
                     GetRandomEntry(_audioPlayerNotUnderstand));
-
             }
         }
 
@@ -554,7 +534,7 @@ namespace SeppApp
         private async void TalkToSepp_OnClicked(object? sender, EventArgs e)
         {
             StopCharacterSleeping();
-            await StartListening(CancellationToken.None);
+            await StartListening();
         }
 
 
@@ -574,8 +554,6 @@ namespace SeppApp
             HomeButtonBorder.IsVisible = false;
             _audioBackground.Volume = 0.5;
 
-            //VolksfestButtonBorder.IsVisible = true;
-            //MaibaumButtonBorder.IsVisible = true;
             _characterFeelingsDebounceDispatcher.Debounce(() => { });
             OchkatzlSchwoafGameBorder.IsVisible = true;
             if (_isFirstTimeOpened)
@@ -612,8 +590,6 @@ namespace SeppApp
         private async void HomeButton_OnClicked(object? sender, EventArgs e)
         {
             HomeButtonBorder.IsVisible = false;
-            //VolksfestButtonBorder.IsVisible = true;
-            //MaibaumButtonBorder.IsVisible = true;
             OchkatzlSchwoafGameBorder.IsVisible = true;
             await ChangeScene("background_wiese.png", "background_sound_wiese.mp3");
         }
@@ -644,28 +620,6 @@ namespace SeppApp
             await FadeOutScene();
             CharacterHeartRegenerate();
         }
-
-
-        /*
-        private async void VolksfestButton_OnClicked(object? sender, EventArgs e)
-        {
-            HomeButtonBorder.IsVisible = true;
-            VolksfestButtonBorder.IsVisible = false;
-            MaibaumButtonBorder.IsVisible = true;
-
-            await ChangeScene("background_volksfest.png", "volksfest.mp3");
-
-        }
-
-        private async void MaibaumButton_OnClicked(object? sender, EventArgs e)
-        {
-            HomeButtonBorder.IsVisible = true;
-            VolksfestButtonBorder.IsVisible = true;
-            MaibaumButtonBorder.IsVisible = false;
-
-            await ChangeScene("background_maibaum.png", "maibaum.mp3");
-
-        }*/
 
         private void ImprintButton_OnClicked(object? sender, EventArgs e)
         {
