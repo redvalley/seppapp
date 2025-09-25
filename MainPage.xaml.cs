@@ -84,6 +84,7 @@ namespace SeppApp
         private CharacterStates _characterState = CharacterStates.Awake;
 
         private readonly Random _random = new();
+        private Task _lmGenerationTask;
 
 
         private const long DefaultAnimiationInterval = 150;
@@ -195,7 +196,7 @@ namespace SeppApp
             return _audioManager.CreatePlayer(FileSystem.OpenAppPackageFileAsync(soundFile).Result);
         }
 
-        private async void CharacterAnimationTimerOnTick(object? sender, EventArgs e)
+        private void CharacterAnimationTimerOnTick(object? sender, EventArgs e)
         {
             if (_currentAnimationImageIndex == _currentcharacterAnimationImageList.Count - 1)
             {
@@ -212,7 +213,7 @@ namespace SeppApp
             CharacterImage.Source = ImageSource.FromFile(_currentcharacterAnimationImageList[_currentAnimationImageIndex]);
         }
 
-        private async void CharacterButton_OnClicked(object? sender, EventArgs e)
+        private void CharacterButton_OnClicked(object? sender, EventArgs e)
         {
             if (_characterState == CharacterStates.Awake)
             {
@@ -349,7 +350,7 @@ namespace SeppApp
             await FadeInBorder.BackgroundColorTo(Colors.Black, length: 2000);
         }
 
-        private async void LetSeppSleep()
+        private void LetSeppSleep()
         {
             MainThread.BeginInvokeOnMainThread(async ()
                 =>
@@ -550,7 +551,7 @@ namespace SeppApp
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            _speechToTextService.Initialize();
+            _lmGenerationTask = Task.Run(async () => { await _speechToTextService.Initialize(); });
             _isPageActive = true;
             var userSettings = AppUserSettings.Load();
 

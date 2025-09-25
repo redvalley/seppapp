@@ -16,7 +16,7 @@ public class IOSSeppAppSpeechToTextImplementation : SeppAppSpeechToTextImplement
     SFSpeechAudioBufferRecognitionRequest? _liveSpeechRequest;
     private readonly SFSpeechLanguageModelConfiguration _languageModelConfiguration;
     private bool _customLmGenerated = false;
-    
+
     /// <inheritdoc/>
     public override SpeechToTextState CurrentState => _recognitionTask?.State is SFSpeechRecognitionTaskState.Running
         ? SpeechToTextState.Listening
@@ -26,28 +26,33 @@ public class IOSSeppAppSpeechToTextImplementation : SeppAppSpeechToTextImplement
     {
         _languageModelConfiguration = new SFSpeechLanguageModelConfiguration();
         var _languageModelCacheDirectory =
-            NSFileManager.DefaultManager.GetUrls(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomain.User)[0].Path;
+            NSFileManager.DefaultManager.GetUrls(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomain.User)[0]
+                .Path;
         if (_languageModelCacheDirectory != null)
         {
             var dynamicLanguageModel = Path.Combine(_languageModelCacheDirectory, "LM");
             var dynamicVocabulary = Path.Combine(_languageModelCacheDirectory, "Vocab");
 
-            _languageModelConfiguration =  
-                new SFSpeechLanguageModelConfiguration(NSUrl.FromFilename(dynamicLanguageModel), NSUrl.FromFilename(dynamicVocabulary));    
+            _languageModelConfiguration =
+                new SFSpeechLanguageModelConfiguration(NSUrl.FromFilename(dynamicLanguageModel),
+                    NSUrl.FromFilename(dynamicVocabulary));
         }
-        
     }
 
 
     public async Task PrepareCustomLm()
     {
-            _customLmGenerated = false;
-            var lmUrl = NSBundle.MainBundle.GetUrlForResource("seppapplm", "bin");
-            await SFSpeechLanguageModel.PrepareCustomModelAsync(lmUrl,  "com.redvalleysoftware.SeppAppLanguageModel", _languageModelConfiguration);
-            _customLmGenerated = true;
+        if (_customLmGenerated)
+        {
+            return;
+        }
+
+        var lmUrl = NSBundle.MainBundle.GetUrlForResource("seppapplm", "bin");
+        await SFSpeechLanguageModel.PrepareCustomModelAsync(lmUrl, "com.redvalleysoftware.SeppAppLanguageModel",
+            _languageModelConfiguration);
+        _customLmGenerated = true;
     }
-    
-    
+
 
     /// <inheritdoc />
     public override ValueTask DisposeAsync()
@@ -95,9 +100,9 @@ public class IOSSeppAppSpeechToTextImplementation : SeppAppSpeechToTextImplement
 
         if (_customLmGenerated && _languageModelConfiguration != null)
         {
-            _liveSpeechRequest.CustomizedLanguageModel = _languageModelConfiguration;    
+            _liveSpeechRequest.CustomizedLanguageModel = _languageModelConfiguration;
         }
-        
+
         InitializeAvAudioSession(out _);
 
         var node = _audioEngine.InputNode;
@@ -189,7 +194,7 @@ public class IOSSeppAppSpeechToTextImplementation : SeppAppSpeechToTextImplement
         _liveSpeechRequest?.EndAudio();
         _recognitionTask?.Cancel();
         OnSpeechToTextStateChanged(CurrentState);
-        
+
         CleanUp();
     }
 

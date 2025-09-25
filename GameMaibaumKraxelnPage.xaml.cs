@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using CommunityToolkit.Maui.Media;
 using Plugin.Maui.Audio;
 using System.Globalization;
 using CommunityToolkit.Maui.Alerts;
@@ -11,20 +10,15 @@ namespace SeppApp;
 
 public partial class GameMaibaumKraxelnPage : ContentPage
 {
-    private IAudioPlayer _audioPlayerSayingOachkatzlSchwoaf;
     private IAudioPlayer _audioPlayerGameResultSuper;
     private IAudioPlayer _audioPlayerGameResultGood;
     private IAudioPlayer _audioPlayerGameResultSolid;
-    private IAudioPlayer _audioPlayerGameResultBad;
     private IAudioPlayer _audioPlayerCoins;
     private IAudioPlayer _audioBackground;
     private IDispatcherTimer _gameTimer;
 
-    readonly IAudioManager _audioManager;
-    readonly ISpeechToText _speechToText;
-    private bool _isOachKatzlSchwoafRecognized;
     private int _currentKraxelImageNo;
-    private string _kraxelImagePrefix = "maibaum_kraxeln_";
+    private readonly string _kraxelImagePrefix = "maibaum_kraxeln_";
     private int _currentKraxelImageBottomMargin;
     private const string LeftTap = "LeftTap";
     private const string RightTap = "RightTap";
@@ -37,14 +31,13 @@ public partial class GameMaibaumKraxelnPage : ContentPage
     public GameMaibaumKraxelnPage(IAudioManager audioManager)
     {
         InitializeComponent();
-        _audioManager = audioManager;
 
-        _audioPlayerGameResultSuper = AudioHelper.CreateAudioPlayer(_audioManager, "game_applause_super.mp3");
-        _audioPlayerGameResultGood = AudioHelper.CreateAudioPlayer(_audioManager, "game_applause_good.mp3");
-        _audioPlayerGameResultSolid = AudioHelper.CreateAudioPlayer(_audioManager, "game_applause_solid.MP3");
-        _audioPlayerGameResultBad = AudioHelper.CreateAudioPlayer(_audioManager, "game_applause_fail.mp3");
-        _audioPlayerCoins = AudioHelper.CreateAudioPlayer(_audioManager, "coins.mp3");
-        _audioBackground = AudioHelper.CreateAudioPlayer(_audioManager, "background_sound_maibaum.mp3");
+        _audioPlayerGameResultSuper = AudioHelper.CreateAudioPlayer(audioManager, "game_applause_super.mp3");
+        _audioPlayerGameResultGood = AudioHelper.CreateAudioPlayer(audioManager, "game_applause_good.mp3");
+        _audioPlayerGameResultSolid = AudioHelper.CreateAudioPlayer(audioManager, "game_applause_solid.MP3");
+        AudioHelper.CreateAudioPlayer(audioManager, "game_applause_fail.mp3");
+        _audioPlayerCoins = AudioHelper.CreateAudioPlayer(audioManager, "coins.mp3");
+        _audioBackground = AudioHelper.CreateAudioPlayer(audioManager, "background_sound_maibaum.mp3");
         FadeInBorder.IsVisible = true;
         NavigationPage.SetHasNavigationBar(this, false);
         _gameTimer = Dispatcher.CreateTimer();
