@@ -5,6 +5,7 @@ using System.Globalization;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Extensions;
 using RedValley.Extensions;
+using SeppApp.Models;
 
 namespace SeppApp;
 
@@ -30,7 +31,9 @@ public partial class GameMaibaumKraxelnPage : ContentPage
     private string? _currentTapPosition;
     private TimeSpan _currentGameTime;
     private bool _isGameRunning;
-
+    private bool _isGameSuccessReached = false;
+    private GameSuccessGrade _currentGameSuccessGrade = GameSuccessGrade.None;
+    
     public GameMaibaumKraxelnPage(IAudioManager audioManager)
     {
         InitializeComponent();
@@ -41,7 +44,7 @@ public partial class GameMaibaumKraxelnPage : ContentPage
         _audioPlayerGameResultSolid = AudioHelper.CreateAudioPlayer(_audioManager, "game_applause_solid.MP3");
         _audioPlayerGameResultBad = AudioHelper.CreateAudioPlayer(_audioManager, "game_applause_fail.mp3");
         _audioPlayerCoins = AudioHelper.CreateAudioPlayer(_audioManager, "coins.mp3");
-        _audioBackground = AudioHelper.CreateAudioPlayer(_audioManager, "background_sound_oachkatzlschwoaf.mp3");
+        _audioBackground = AudioHelper.CreateAudioPlayer(_audioManager, "background_sound_maibaum.mp3");
         FadeInBorder.IsVisible = true;
         NavigationPage.SetHasNavigationBar(this, false);
         _gameTimer = Dispatcher.CreateTimer();
@@ -62,35 +65,18 @@ public partial class GameMaibaumKraxelnPage : ContentPage
         await FadeInScene();
         _currentKraxelImageNo = 1;
         _currentKraxelImageBottomMargin = 0;
-        _audioBackground.Loop = true;
-        _audioBackground.Play();
+        StartBackgroundSound();
         var userSettings = AppUserSettings.Load();
         this.CoinLabel.Text = userSettings.Coins.ToString();
     }
 
-
-
-    public void StartGame()
+    private void StartBackgroundSound()
     {
-        if (_isGameRunning)
-        {
-            return;
-        }
-        _isGameRunning = true;
-        _audioBackground.Stop();
-        GameHintBorder.IsVisible = false;
-
-        _currentGameTime = TimeSpan.Zero;
-        _gameTimer.Start();
-        _currentKraxelImageNo = 0;
-        KraxelImage.Source = ImageSource.FromFile(_kraxelImagePrefix + _currentKraxelImageNo);
-        _currentKraxelImageBottomMargin = 0;
-        KraxelImage.Margin = Thickness.Zero;
+        _audioBackground.Loop = true;
+        _audioBackground.Volume = 0.1;
+        _audioBackground.Play();
     }
 
-    
-
-    
 
     private void HomeButton_OnClicked(object? sender, EventArgs e)
     {
@@ -106,58 +92,161 @@ public partial class GameMaibaumKraxelnPage : ContentPage
         FadeInBorder.IsVisible = false;
     }
 
-    private void LeftTappedKraxelnButton_OnClicked(object? sender, EventArgs e)
+    private async void LeftTappedKraxelnButton_OnClicked(object? sender, EventArgs e)
     {
-        StartGame();
-
-        Kraxeln(LeftTap);
-
-        CheckGameSuccess();
-    }
-
-    private void CheckGameSuccess()
-    {
-        var backgroundImageHeight = BackgroundImage.Height;
-        
-        if (_currentKraxelImageBottomMargin >= backgroundImageHeight - 150)
-        {
-            GameHintBorder.IsVisible = true;
-            _gameTimer.Stop();
-            _isGameRunning = false;
-
-            if (_currentGameTime.TotalSeconds <= 60)
-            {
-                GameHintLabel.Text = Properties.Resources.LabelGameHintMaibaumKraxelnSuper;
-                KraxelImage.Source = ImageSource.FromFile("sepp_happy");
-                _audioPlayerGameResultSuper.Play();
-
-            } else if (_currentGameTime.TotalSeconds <= 120)
-            {
-                GameHintLabel.Text = Properties.Resources.LabelGameHintMaibaumKraxelnOk;
-                KraxelImage.Source = ImageSource.FromFile("sepp_1");
-                _audioPlayerGameResultGood.Play();
-            }
-            else
-            {
-                GameHintLabel.Text = Properties.Resources.LabelGameHintMaibaumKraxelnBad;
-                KraxelImage.Source = ImageSource.FromFile("sepp_grantig");
-                _audioPlayerGameResultSolid.Play();
-            }
-
-
-        }
-    }
-
-    private void Kraxeln(string tapPosition)
-    {
-
-
-        if (_currentTapPosition != null && _currentTapPosition == tapPosition)
+        if (_isGameSuccessReached)
         {
             return;
         }
 
-        
+        StartGame();
+
+        Kraxeln(LeftTap);
+
+        await CheckGameSuccess();
+    }
+    
+    private async void RightTappedKraxelnButton_OnClicked(object? sender, EventArgs e)
+    {
+        if (_isGameSuccessReached)
+        {
+            return;
+        }
+
+        StartGame();
+
+        Kraxeln(RightTap);
+
+        await CheckGameSuccess();
+    }
+    
+    public void StartGame()
+    {
+        if (_isGameRunning)
+        {
+            return;
+        }
+        _currentGameSuccessGrade = GameSuccessGrade.None;
+        _isGameRunning = true;
+        GameHintBorder.IsVisible = false;
+        StartBackgroundSound();
+        _currentGameTime = TimeSpan.Zero;
+        _gameTimer.Start();
+        _currentKraxelImageNo = 0;
+        KraxelImage.Source = ImageSource.FromFile(_kraxelImagePrefix + 1);
+        KraxelImage.WidthRequest = 80;
+        KraxelImage.HeightRequest = 100;
+        _currentKraxelImageBottomMargin = 50;
+        KraxelImage.Margin = Thickness.Zero;
+    }
+
+    private async Task CheckGameSuccess()
+    {
+        var backgroundImageHeight = BackgroundImage.Height;
+
+        if (_currentKraxelImageBottomMargin >= backgroundImageHeight - 150)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                _isGameSuccessReached = true;
+                GameHintBorder.IsVisible = true;
+                _gameTimer.Stop();
+                _audioBackground.Stop();
+                var userSettings = AppUserSettings.Load();
+                
+                if (_currentGameTime.TotalSeconds <= 20)
+                {
+                    _currentGameSuccessGrade = GameSuccessGrade.Top;
+                    GameHintLabel.Text = Properties.Resources.LabelGameHintMaibaumKraxelnSuper;
+                    userSettings.Coins += 20;
+       
+                    _audioPlayerGameResultSuper.Play();
+                    _audioPlayerGameResultSuper.PlaybackEnded += AudioPlayerGameResultSuperOnPlaybackEnded;
+                } else if (_currentGameTime.TotalSeconds <= 30)
+                {
+                    _currentGameSuccessGrade = GameSuccessGrade.Good;
+                    GameHintLabel.Text = Properties.Resources.LabelGameHintMaibaumKraxelnOk;
+                    userSettings.Coins += 10;
+                    
+                    _audioPlayerGameResultGood.Play();
+                    _audioPlayerGameResultGood.PlaybackEnded += AudioPlayerGameResultGoodOnPlaybackEnded;
+                }
+                else
+                {
+                    _currentGameSuccessGrade = GameSuccessGrade.Solid;
+                    GameHintLabel.Text = Properties.Resources.LabelGameHintMaibaumKraxelnBad;
+                    userSettings.Coins += 5;
+                    
+                    _audioPlayerGameResultSolid.Play();
+                    _audioPlayerGameResultSolid.PlaybackEnded += AudioPlayerGameResultSolidOnPlaybackEnded;
+                }
+
+                userSettings.Save();
+            });
+            
+            await Task.Delay(3000);
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                _currentKraxelImageBottomMargin = 50;
+                KraxelImage.Margin = new Thickness(- 100, 0, 0, _currentKraxelImageBottomMargin);
+                KraxelImage.WidthRequest = 160;
+                KraxelImage.HeightRequest = 200;
+                
+                
+                switch (_currentGameSuccessGrade)
+                {
+                    case GameSuccessGrade.Top:
+                        KraxelImage.Source = ImageSource.FromFile("sepp_happy.png");
+                        break;
+                    case GameSuccessGrade.Good:
+                        KraxelImage.Source = ImageSource.FromFile("sepp_transparent_1.png");
+                        break;
+                    default:
+                        KraxelImage.Source = ImageSource.FromFile("sepp_grantig.png");
+                        break;
+                }
+            });
+            
+            
+            _isGameRunning = false;
+            _isGameSuccessReached = false;
+        }
+    }
+
+    private void AudioPlayerGameResultSolidOnPlaybackEnded(object? sender, EventArgs e)
+    {
+        _audioPlayerGameResultSolid.PlaybackEnded -= AudioPlayerGameResultSolidOnPlaybackEnded;
+        _audioPlayerCoins.Play();
+        UpdateCoinLabel();
+    }
+    
+    private void AudioPlayerGameResultGoodOnPlaybackEnded(object? sender, EventArgs e)
+    {
+        _audioPlayerGameResultGood.PlaybackEnded -= AudioPlayerGameResultGoodOnPlaybackEnded;
+        _audioPlayerCoins.Play();
+        UpdateCoinLabel();
+    }
+
+    private void AudioPlayerGameResultSuperOnPlaybackEnded(object? sender, EventArgs e)
+    {
+        _audioPlayerGameResultSuper.PlaybackEnded -= AudioPlayerGameResultSuperOnPlaybackEnded;
+        _audioPlayerCoins.Play();
+        UpdateCoinLabel();
+    }
+    
+    private void UpdateCoinLabel()
+    {
+        var userSettings = AppUserSettings.Load();
+        CoinLabel.Text = userSettings.Coins.ToString();
+    }
+
+
+    private void Kraxeln(string tapPosition)
+    {
+        if (_currentTapPosition != null && _currentTapPosition == tapPosition)
+        {
+            return;
+        }
 
         if (_currentKraxelImageNo == 3)
         {
@@ -184,14 +273,5 @@ public partial class GameMaibaumKraxelnPage : ContentPage
         }
 
         _currentTapPosition = tapPosition;
-    }
-
-    private void RightTappedKraxelnButton_OnClicked(object? sender, EventArgs e)
-    {
-        StartGame();
-
-        Kraxeln(RightTap);
-
-        CheckGameSuccess();
     }
 }

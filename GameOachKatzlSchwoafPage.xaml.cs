@@ -20,7 +20,8 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
 
     readonly ISpeechToTextService _speechToTextService;
     private bool _isWordRecognized;
-
+    private bool _isListening = false;
+    
     private IEnumerable<string> GameWords =
     [
         "oachkatzlschwoaf"
@@ -30,17 +31,21 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
     {
         {
             "oachkatzlschwoaf",
-            ["oachkatzlschwoaf", "oachkatzelschwoaf", "oarchkatzelschwoaf", "ohrkatzelschworf", "ohrkatzlschworf"]
+            [
+                "oachkatzlschwoaf", "oachkatzelschwoaf", "oarchkatzelschwoaf", "ohrkatzelschworf", "ohrkatzlschworf",
+                "achkatzlschwoaf"
+            ]
         }
     };
-   
-    
+
+
     private Dictionary<string, IEnumerable<IEnumerable<string>>> HalfCorrectWordsDictionary = new()
     {
         {
             "oachkatzlschwoaf",
-            [["katzel", "katzl"],
-             ["schwoaf", "schweif", "schworf"]
+            [
+                ["oach", "ach", "katzl", "katzel", "katzen", "schwoaf", "schweif", "schworf", "schorf"],
+                ["oach", "ach", "katzl", "katzel", "katzen", "schwoaf", "schweif", "schworf", "schorf"]
             ]
         }
     };
@@ -49,9 +54,11 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
     {
         {
             "oachkatzlschwoaf",
-            ["oach", "katzl", "katzel", "schwoaf", "schweif"]
+            ["oach", "ach", "katzl", "katzel", "katzen", "schwoaf", "schweif", "schworf", "schorf"]
         }
     };
+
+    private Task _lmGenerationTask;
 
     public GameOachKatzlSchwoafPage(IAudioManager audioManager, ISpeechToTextService speechToTextService)
     {
@@ -71,8 +78,11 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
+        _lmGenerationTask = Task.Run(async () => { await _speechToTextService.Initialize(); });
+
         await FadeInScene();
-        TalkNowIcon.IsVisible = false;
+        TalkNowBorder.IsVisible = false;
         _audioBackground.Loop = true;
         _audioBackground.Volume = 0.1;
         _audioBackground.Play();
@@ -87,6 +97,11 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
 
     public void StartGame()
     {
+        if (_isListening)
+        {
+            return;
+        }
+
         _audioBackground.Stop();
         GameHintBorder.IsVisible = false;
         this.BackgroundImage.Source = ImageSource.FromFile("oachkatzl_listening.png");
@@ -102,17 +117,18 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
 
     private async Task StartListening(CancellationToken cancellationToken)
     {
-        TalkNowIcon.IsVisible = true;
-            await _speechToTextService.StartListeningAsync(CancellationToken.None, recognizedText =>
+        TalkNowBorder.IsVisible = true;
+        _isListening = true;
+        await _speechToTextService.StartListeningAsync(CancellationToken.None, recognizedText =>
             {
                 RecognizeOachkatzlSchwoaf(recognizedText);
-            }, async () =>
+                _isListening = false;
+            },
+            async () =>
             {
                 await Toast.Make(Properties.Resources.ToastErrorMicrophoneAccessMissing).Show(CancellationToken.None);
             });
-        
     }
-
 
 
     private void RecognizeOachkatzlSchwoaf(string recognizedText)
@@ -121,7 +137,7 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
         IAudioPlayer? audioPlayerGameResult = null;
         GameHintBorder.IsVisible = true;
         _isWordRecognized = true;
-        TalkNowIcon.IsVisible = false;
+        TalkNowBorder.IsVisible = false;
         string gameWord = GameWords.First();
 
         if (recognizedText.ContainsAny(FullyCorrectWordsDictionary[gameWord]))
@@ -130,7 +146,6 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
             userSettings.Coins += 20;
             GameHintLabel.Text = Properties.Resources.LabelGameHintOachkatzlSchwoafTop;
             audioPlayerGameResult = _audioPlayerGameResultSuper;
-            
         }
         else if (recognizedText.ContainsAnyAndCombined(HalfCorrectWordsDictionary[gameWord]))
 
@@ -168,7 +183,7 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
         {
             _audioPlayerCoins.Play();
         }
-        
+
         this.BackgroundImage.Source = ImageSource.FromFile("background_oachkatzlschwoaf_game.png");
         _audioBackground.Play();
         _audioBackground.Volume = 0.1;

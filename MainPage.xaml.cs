@@ -228,11 +228,20 @@ namespace SeppApp
 
         private async Task StartListening()
         {
+            TalkNowBorder.IsVisible = true;
+            TalkNowActivityIndicator.IsVisible = true;
+            TalkNowActivityIndicator.IsRunning = true;
             await _speechToTextService.StartListeningAsync(CancellationToken.None, recognizedText =>
             {
+                TalkNowBorder.IsVisible = false;
+                TalkNowActivityIndicator.IsVisible = false;
+                TalkNowActivityIndicator.IsRunning = false;
                 RecognizeTextAndReplay(recognizedText);
             }, async () =>
             {
+                TalkNowBorder.IsVisible = false;
+                TalkNowActivityIndicator.IsVisible = false;
+                TalkNowActivityIndicator.IsRunning = false;
                 await Toast.Make(Properties.Resources.ToastErrorMicrophoneAccessMissing).Show(CancellationToken.None);
             }, " ");
         }
@@ -541,6 +550,7 @@ namespace SeppApp
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            _speechToTextService.Initialize();
             _isPageActive = true;
             var userSettings = AppUserSettings.Load();
 

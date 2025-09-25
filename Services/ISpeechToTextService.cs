@@ -7,4 +7,6 @@ public interface ISpeechToTextService
         Action permissionMissing,
         string? defaultWordSeperator = null,
         int? maxListenTimeMilliSeconds = null);
+
+    Task Initialize();
 }

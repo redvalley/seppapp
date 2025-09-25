@@ -4,7 +4,7 @@
              xmlns:resources="clr-namespace:SeppApp.Properties"
              x:Class="SeppApp.SplashPage"
              BackgroundColor="#D76B0A">
-    <Grid RowDefinitions="*, Auto" BackgroundColor="Transparent">
+    <Grid RowDefinitions="*, Auto" BackgroundColor="Transparent" IgnoreSafeArea="True">
         
 
         <Image Grid.Row="0" Grid.RowSpan="2"

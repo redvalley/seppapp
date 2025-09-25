@@ -26,7 +26,11 @@ public static class ServiceCollectionExtension
             services.AddSingleton<IRedValleyInterstitualAdService>(new DummyRedValleyInterstitualAdService());
         }
 
+#if IOS
+        services.AddSingleton<ISpeechToText>(new IOSSeppAppSpeechToTextImplementation());
+#else
         services.AddSingleton<ISpeechToText>(SpeechToText.Default);
+#endif
         services.AddSingleton<IAudioManager>(AudioManager.Current);
         services.AddSingleton<ISpeechToTextService, SpeechToTextService>();
     }

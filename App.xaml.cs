@@ -29,7 +29,7 @@ namespace SeppApp
                 }
                 
 
-                var splashPage = activationState?.Context.Services?.GetRequiredService<GameOachKatzlSchwoafPage>();
+                var splashPage = activationState?.Context.Services?.GetRequiredService<SplashPage>();
                 if (splashPage == null) return base.CreateWindow(activationState);
                 var mainWindow = new Window(splashPage);
 

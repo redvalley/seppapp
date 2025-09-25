@@ -352,21 +352,23 @@ try to repeat the word as accurately as possible to earn the highest score you c
 
 Looks like it wasn’t your best run... No coins this time, but chin up – next round is your chance to shine! 
 
-Just tap the squirrel to start a new round.</value>
+Tap on the squirrel to try it again!</value>
     <comment>-</comment>
   </data>
   <data name="LabelGameHintOachkatzlSchwoafGood" xml:space="preserve">
     <value>🥈 Great Job – 10 Coins
 
-Strong performance! You were close to the top. You’ve earned 10 coins for your effort. Tap the squirrel to show what you’ve got in the next round!</value>
+Strong performance!
+
+Tap on the squirrel to try it again!</value>
     <comment>-</comment>
   </data>
   <data name="LabelGameHintOachkatzlSchwoafSolid" xml:space="preserve">
     <value>🥉 Decent Effort – 5 Coins
 
-Not bad! You held your ground. You get 5 coins for your determination – keep going, practice makes champions! 
+Not bad! You held your ground – keep going! 
 
-One tap on the squirrel, and you're back in the game!</value>
+Tap on the squirrel to try it again!</value>
     <comment>-</comment>
   </data>
   <data name="LabelGameHintOachkatzlSchwoafTop" xml:space="preserve">

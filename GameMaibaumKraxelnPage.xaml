@@ -5,24 +5,21 @@
              Title="GameMaibaumKraxelnPage"
              xmlns:resources="clr-namespace:SeppApp.Properties"
              >
-    <Grid RowDefinitions="Auto, Auto, *" ColumnDefinitions="*,*">
+    <Grid RowDefinitions="Auto, Auto, *" ColumnDefinitions="*,*" IgnoreSafeArea="True">
         <Image x:Name="BackgroundImage" Grid.RowSpan="3" Grid.ColumnSpan="2"  Source="background_maibaumkraxeln_game.png" Aspect="Fill" />
-        <Border Grid.Row="0" VerticalOptions="Start" Grid.ColumnSpan="2" Margin="10" HorizontalOptions="End">
+        <Border Grid.Row="0" VerticalOptions="Start" Grid.ColumnSpan="2" Margin="10, 50" HorizontalOptions="End">
             <HorizontalStackLayout>
                 <Image Source="icon_bavaria_coin.png" HeightRequest="40" VerticalOptions="Center" Margin="5" HorizontalOptions="End" ></Image>
                 <Label x:Name="CoinLabel" Margin="10,5,10,5" MinimumWidthRequest="50" HorizontalTextAlignment="End" Text=""></Label>
             </HorizontalStackLayout>
         </Border>
-        <Border Grid.Row="0" VerticalOptions="Start" Grid.ColumnSpan="2" Margin="10" HorizontalOptions="Start">
+        <Border Grid.Row="0" VerticalOptions="Start" Grid.ColumnSpan="2" Margin="10, 50" HorizontalOptions="Start">
             <HorizontalStackLayout>
                 <Image Source="icon_stop_watch.png" HeightRequest="40" VerticalOptions="Center" Margin="5" HorizontalOptions="End" ></Image>
                 <Label x:Name="StopWatchLabel" Margin="10,5,10,5" MinimumWidthRequest="50" HorizontalTextAlignment="End" Text=""></Label>
             </HorizontalStackLayout>
         </Border>
-        <Image x:Name="KraxelImage" Grid.ColumnSpan="2" WidthRequest="80" HeightRequest="100" Grid.RowSpan="3"  Source="maibaum_kraxeln_1.png" Aspect="AspectFit" 
-               VerticalOptions="End"
-               HorizontalOptions="Center"
-               />
+        
         <Border Grid.Row="1" Grid.ColumnSpan="2" x:Name="GameHintBorder" Style="{StaticResource HintBorder}">
             <Label x:Name="GameHintLabel" Margin="10" Text="{x:Static resources:Resources.LabelGameHintMaibaumkraxeln }"></Label>
         </Border>
@@ -42,12 +39,15 @@
                 CornerRadius="0" Grid.Row="2" 
                 Clicked="RightTappedKraxelnButton_OnClicked"></Button>
         
-
+        <Image x:Name="KraxelImage" Grid.ColumnSpan="2" WidthRequest="80" HeightRequest="100" Grid.RowSpan="3"  Source="maibaum_kraxeln_1.png" Aspect="AspectFit" 
+               VerticalOptions="End"
+               HorizontalOptions="Center"
+        />
         <Border  HeightRequest="80"
                  WidthRequest="80"
                  Grid.Row="2"
                  BackgroundColor="#604F3F"
-                 Margin="5"
+                 Margin="20"
                  x:Name="HomeButtonBorder"
                  VerticalOptions="End"
                  HorizontalOptions="Start"

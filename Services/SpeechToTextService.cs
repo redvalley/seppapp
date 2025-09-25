@@ -1,6 +1,8 @@
 using System.Globalization;
 using CommunityToolkit.Maui.Media;
+using RedValley;
 using RedValley.Extensions;
+using RedValley.Helper;
 using SeppApp.Models;
 
 namespace SeppApp.Services;
@@ -9,14 +11,29 @@ public class SpeechToTextService : ISpeechToTextService
 {
     private readonly ISpeechToText _speechToText;
 
-    private string _recognizedText;
+    private string _recognizedText = string.Empty;
     private Action<string>? _recognitionDoneHandler;
     public const int DefaultMaxListenTimeMilliSeconds = 5000;
-    private string _defaultWordSeperator;
+    private string _defaultWordSeperator = string.Empty;
 
     public SpeechToTextService(ISpeechToText speechToText)
     {
         _speechToText = speechToText;
+    }
+
+    public async Task Initialize()
+    {
+        await ExceptionHelper.TryAsync("SpeechToTextService.Initialize", async () =>
+        {
+#if IOS
+            if (_speechToText is IOSSeppAppSpeechToTextImplementation iosSeppAppSpeechToTextImplementation)
+            {
+                await iosSeppAppSpeechToTextImplementation.PrepareCustomLm();
+            }
+#else
+            await Task.Run(()=>{});
+#endif
+        }, Logging.CreateCoreLogger());
     }
 
     public async Task StartListeningAsync(CancellationToken cancellationToken, 
@@ -25,50 +42,54 @@ public class SpeechToTextService : ISpeechToTextService
         string? defaultWordSeperator = null,
         int? maxListenTimeMilliSeconds = null)
     {
-        var isGranted = await _speechToText.RequestPermissions(cancellationToken);
-        if (!isGranted)
+        await ExceptionHelper.TryAsync("SpeechToTextService.StartListeningAsync", async () =>
         {
-            permissionMissing?.Invoke();
-            return;
-        }
 
-        _defaultWordSeperator = defaultWordSeperator??string.Empty;
-        
-        _recognizedText = string.Empty;
-        _recognitionDoneHandler = recognitionDone;
-        var currentMaxListenTimeMilliSeconds = maxListenTimeMilliSeconds;
-#if IOS
-        if (currentMaxListenTimeMilliSeconds == null)
-        {
-            currentMaxListenTimeMilliSeconds = DefaultMaxListenTimeMilliSeconds;
-        }
-
-        _speechToText.RecognitionResultUpdated -= OnSpeechToTextOnRecognitionResultUpdated;
-        _speechToText.RecognitionResultUpdated += OnSpeechToTextOnRecognitionResultUpdated;
-#else
-      _speechToText.RecognitionResultCompleted -= OnSpeechToTextOnRecognitionResultCompleted;
-      _speechToText.RecognitionResultCompleted += OnSpeechToTextOnRecognitionResultCompleted;
-#endif
-
-
-        await _speechToText.StartListenAsync(new SpeechToTextOptions()
+            var isGranted = await _speechToText.RequestPermissions(cancellationToken);
+            if (!isGranted)
             {
-                Culture = CultureInfo.CurrentCulture,
-#if IOS
-                ShouldReportPartialResults = true,
-#endif
+                permissionMissing?.Invoke();
+                return;
             }
-        );
 
+            _defaultWordSeperator = defaultWordSeperator ?? string.Empty;
 
-        if (currentMaxListenTimeMilliSeconds != null)
-        {
-            await Task.Delay(currentMaxListenTimeMilliSeconds.Value);
-            await _speechToText.StopListenAsync();
+            _recognizedText = string.Empty;
+            _recognitionDoneHandler = recognitionDone;
+            var currentMaxListenTimeMilliSeconds = maxListenTimeMilliSeconds;
+#if IOS
+            if (currentMaxListenTimeMilliSeconds == null)
+            {
+                currentMaxListenTimeMilliSeconds = DefaultMaxListenTimeMilliSeconds;
+            }
+
             _speechToText.RecognitionResultUpdated -= OnSpeechToTextOnRecognitionResultUpdated;
+            _speechToText.RecognitionResultUpdated += OnSpeechToTextOnRecognitionResultUpdated;
+#else
+            _speechToText.RecognitionResultCompleted -= OnSpeechToTextOnRecognitionResultCompleted;
+            _speechToText.RecognitionResultCompleted += OnSpeechToTextOnRecognitionResultCompleted;
+#endif
 
-            _recognitionDoneHandler?.Invoke(_recognizedText);
-        }
+            var germanCultureInfo = CultureInfo.GetCultureInfo("de-DE");
+            await _speechToText.StartListenAsync(new SpeechToTextOptions()
+                {
+                    Culture = germanCultureInfo,
+#if IOS
+                    ShouldReportPartialResults = true,
+#endif
+                }
+            );
+
+
+            if (currentMaxListenTimeMilliSeconds != null)
+            {
+                await Task.Delay(currentMaxListenTimeMilliSeconds.Value);
+                await _speechToText.StopListenAsync();
+                _speechToText.RecognitionResultUpdated -= OnSpeechToTextOnRecognitionResultUpdated;
+
+                _recognitionDoneHandler?.Invoke(_recognizedText);
+            }
+        }, Logging.CreateCoreLogger());
     }
 
 

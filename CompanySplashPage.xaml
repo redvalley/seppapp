@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SeppApp.CompanySplashPage">
-    <Grid BackgroundColor="White">
+    <Grid BackgroundColor="White" IgnoreSafeArea="True">
         <Image Margin="50"
                Source="logo_redvalley_software.png"
                VerticalOptions="Center" 

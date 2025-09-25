@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SeppApp.MainPage"
              >
-    <Grid RowDefinitions="Auto, Auto,*" ColumnDefinitions="*">
+    <Grid RowDefinitions="Auto, Auto,*" ColumnDefinitions="*" IgnoreSafeArea="True">
         <Image x:Name="BackgroundImage" Grid.RowSpan="3"  Source="background_wiese.png" Aspect="Fill"></Image>
 
         <HorizontalStackLayout 
             Grid.Row="0"
-            VerticalOptions="Start" HorizontalOptions="Start" Margin="5">
+            VerticalOptions="Start" HorizontalOptions="Start" Margin="5,20">
             <Border  HeightRequest="70"
                      WidthRequest="70"
                      BackgroundColor="#604F3F"
@@ -42,14 +42,37 @@
 
         </HorizontalStackLayout>
 
-        <Image x:Name="CharacterHeart" 
-               Grid.Row="1"
-               Source="heart_transparent" HeightRequest="50" HorizontalOptions="End" VerticalOptions="Start" Margin="5,5,10,5" ></Image>
+        <VerticalStackLayout Grid.Row="1"
+                             HorizontalOptions="End" 
+                             VerticalOptions="Start" 
+                             Margin="5,5,10,5">
+            <Image x:Name="CharacterHeart" 
+                   Grid.Row="1"
+                   Source="heart_transparent" HeightRequest="50" ></Image>
 
+            <Border  HeightRequest="60"
+                     WidthRequest="60"
+                     IsVisible="False"
+                     BackgroundColor="{StaticResource Primary}"
+                     Margin="10"
+                     x:Name="TalkNowBorder"
+                     VerticalOptions="End"
+                     HorizontalOptions="End"
+            >
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="25" />
+                </Border.StrokeShape>
+                <Image Grid.Row="1" HeightRequest="50" WidthRequest="50" Aspect="AspectFill" Source="icon_talk_now" />
+            </Border>
+            <ActivityIndicator x:Name="TalkNowActivityIndicator" IsRunning="False" HeightRequest="50" Color="Black"  />
+        </VerticalStackLayout>
+        
+        
+        
         <Label Grid.Row="1" TextColor="White" x:Name="RecognizedText" />
 
         
-        <Border Grid.Row="0" VerticalOptions="Start" Margin="10" HorizontalOptions="End">
+        <Border Grid.Row="0" VerticalOptions="Start" Margin="10 , 40" HorizontalOptions="End">
             <HorizontalStackLayout>
                 <Image Source="icon_bavaria_coin.png" HeightRequest="40" VerticalOptions="Center" Margin="5" HorizontalOptions="End" ></Image>
                 <Label x:Name="CoinLabel" Margin="10,5,10,5" MinimumWidthRequest="50" HorizontalTextAlignment="End" Text=""></Label>
