@@ -76,8 +76,10 @@ public class SpeechToTextService : ISpeechToTextService
                     Culture = germanCultureInfo,
 #if IOS
                     ShouldReportPartialResults = true,
+#else
+                    ShouldReportPartialResults = false
 #endif
-                }
+            }
             );
 
 
@@ -100,9 +102,9 @@ public class SpeechToTextService : ISpeechToTextService
         _speechToText.RecognitionResultCompleted -= OnSpeechToTextOnRecognitionResultCompleted;
         if (e.RecognitionResult?.Text?.IsNotEmpty()??false)
         {
-            _recognizedText = e.Result.Text;
+            _recognizedText = e.RecognitionResult?.Text??string.Empty;
+            _recognitionDoneHandler?.Invoke(_recognizedText);
         }
-
 #endif
     }
 
