@@ -3,7 +3,10 @@ using Plugin.Maui.Audio;
 using System.Globalization;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Extensions;
+using RedValley;
 using RedValley.Extensions;
+using RedValley.Helper;
+using SeppApp.Helper;
 using SeppApp.Services;
 
 namespace SeppApp;
@@ -21,7 +24,7 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
     readonly ISpeechToTextService _speechToTextService;
     private bool _isWordRecognized;
     private bool _isListening = false;
-    
+
     private IEnumerable<string> GameWords =
     [
         "oachkatzlschwoaf"
@@ -59,6 +62,7 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
     };
 
     private Task _lmGenerationTask;
+    private IAudioPlayer? _audioPlayerGameResult;
 
     public GameOachKatzlSchwoafPage(IAudioManager audioManager, ISpeechToTextService speechToTextService)
     {
@@ -80,14 +84,27 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
         base.OnAppearing();
 
         _lmGenerationTask = Task.Run(async () => { await _speechToTextService.Initialize(); });
+        
+        var userSettings = AppUserSettings.Load();
+        InitializeGame(userSettings);
 
         await FadeInScene();
+    }
+
+    private void InitializeGame(AppUserSettings userSettings)
+    {
+        GameHintBorder.IsVisible = true;
         TalkNowBorder.IsVisible = false;
+        this.CoinLabel.Text = userSettings.Coins.ToString();
+        this.BackgroundImage.Source = ImageSource.FromFile("background_oachkatzlschwoaf_game.png");
+        PlayAudioBackground();
+    }
+
+    private void PlayAudioBackground()
+    {
         _audioBackground.Loop = true;
         _audioBackground.Volume = 0.1;
         _audioBackground.Play();
-        var userSettings = AppUserSettings.Load();
-        this.CoinLabel.Text = userSettings.Coins.ToString();
     }
 
     private void StartGameButton_OnClicked(object? sender, EventArgs e)
@@ -101,6 +118,7 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
         {
             return;
         }
+        _isListening = true;
 
         _audioBackground.Stop();
         GameHintBorder.IsVisible = false;
@@ -117,76 +135,88 @@ public partial class GameOachKatzlSchwoafPage : ContentPage
 
     private async Task StartListening(CancellationToken cancellationToken)
     {
-        TalkNowBorder.IsVisible = true;
-        _isListening = true;
-        await _speechToTextService.StartListeningAsync(CancellationToken.None, recognizedText =>
-            {
-                RecognizeOachkatzlSchwoaf(recognizedText);
-                _isListening = false;
-            },
-            async () =>
-            {
-                await Toast.Make(Properties.Resources.ToastErrorMicrophoneAccessMissing).Show(CancellationToken.None);
-            });
+        await ExceptionHelper.TryAsync(this.GetType().Name + " " + nameof(StartListening), async () =>
+        {
+            this.BackgroundImage.Source = ImageSource.FromFile("oachkatzlschwoaf_sepp_horcht.png");
+            TalkNowBorder.IsVisible = true;
+
+            await _speechToTextService.StartListeningAsync(CancellationToken.None, recognizedText =>
+                {
+                    RecognizeOachkatzlSchwoaf(recognizedText);
+                    _isListening = false;
+                },
+                async () =>
+                {
+                    await Toast.Make(Properties.Resources.ToastErrorMicrophoneAccessMissing)
+                        .Show(CancellationToken.None);
+                }, maxListenTimeMilliSeconds: SpeechToTextService.DefaultMaxListenTimeMilliSeconds);
+        }, Logging.CreateGameLogger());
+
+
     }
 
 
     private void RecognizeOachkatzlSchwoaf(string recognizedText)
     {
-        var userSettings = AppUserSettings.Load();
-        IAudioPlayer? audioPlayerGameResult = null;
-        GameHintBorder.IsVisible = true;
-        _isWordRecognized = true;
-        TalkNowBorder.IsVisible = false;
-        string gameWord = GameWords.First();
-
-        if (recognizedText.ContainsAny(FullyCorrectWordsDictionary[gameWord]))
+        ExceptionHelper.Try(this.GetType().Name + " " + nameof(RecognizeOachkatzlSchwoaf), () =>
         {
-            this.BackgroundImage.Source = ImageSource.FromFile("oachkatzl_happy.png");
-            userSettings.Coins += 20;
-            GameHintLabel.Text = Properties.Resources.LabelGameHintOachkatzlSchwoafTop;
-            audioPlayerGameResult = _audioPlayerGameResultSuper;
-        }
-        else if (recognizedText.ContainsAnyAndCombined(HalfCorrectWordsDictionary[gameWord]))
+            var userSettings = AppUserSettings.Load();
+            _isWordRecognized = true;
+            TalkNowBorder.IsVisible = false;
+            string gameWord = GameWords.First();
 
-        {
-            this.BackgroundImage.Source = ImageSource.FromFile("oachkatzl_ok.png");
-            userSettings.Coins += 10;
-            GameHintLabel.Text = Properties.Resources.LabelGameHintOachkatzlSchwoafGood;
-            audioPlayerGameResult = _audioPlayerGameResultGood;
-        }
-        else if (recognizedText.ContainsAny(NearlyCorrectWordsDictionary[gameWord]))
-        {
-            this.BackgroundImage.Source = ImageSource.FromFile("oachkatzl_ok.png");
-            userSettings.Coins += 5;
-            GameHintLabel.Text = Properties.Resources.LabelGameHintOachkatzlSchwoafSolid;
-            audioPlayerGameResult = _audioPlayerGameResultSolid;
-        }
-        else
-        {
-            this.BackgroundImage.Source = ImageSource.FromFile("oachkatzl_confused.png");
-            GameHintLabel.Text = Properties.Resources.LabelGameHintOachkatzlSchwoafBad;
-            audioPlayerGameResult = _audioPlayerGameResultBad;
-            _isWordRecognized = false;
-        }
+            if (recognizedText.ContainsAny(FullyCorrectWordsDictionary[gameWord]))
+            {
+                this.BackgroundImage.Source = ImageSource.FromFile("oachkatzl_happy.png");
+                userSettings.Coins += 20;
+                GameHintLabel.Text = Properties.Resources.LabelGameHintOachkatzlSchwoafTop;
+                _audioPlayerGameResult = _audioPlayerGameResultSuper;
+            }
+            else if (recognizedText.ContainsAnyAndCombined(HalfCorrectWordsDictionary[gameWord]))
 
-        userSettings.Save();
-        CoinLabel.Text = userSettings.Coins.ToString();
+            {
+                this.BackgroundImage.Source = ImageSource.FromFile("oachkatzl_ok.png");
+                userSettings.Coins += 10;
+                GameHintLabel.Text = Properties.Resources.LabelGameHintOachkatzlSchwoafGood;
+                _audioPlayerGameResult = _audioPlayerGameResultGood;
+            }
+            else if (recognizedText.ContainsAny(NearlyCorrectWordsDictionary[gameWord]))
+            {
+                this.BackgroundImage.Source = ImageSource.FromFile("oachkatzl_ok.png");
+                userSettings.Coins += 5;
+                GameHintLabel.Text = Properties.Resources.LabelGameHintOachkatzlSchwoafSolid;
+                _audioPlayerGameResult = _audioPlayerGameResultSolid;
+            }
+            else
+            {
+                this.BackgroundImage.Source = ImageSource.FromFile("oachkatzl_confused.png");
+                GameHintLabel.Text = Properties.Resources.LabelGameHintOachkatzlSchwoafBad;
+                _audioPlayerGameResult = _audioPlayerGameResultBad;
+                _isWordRecognized = false;
+            }
 
-        audioPlayerGameResult.Play();
-        audioPlayerGameResult.PlaybackEnded += AudioPlayerGameResultOnPlaybackEnded;
+            GameHintBorder.IsVisible = true;
+            userSettings.Save();
+ 
+            _audioPlayerGameResult.Play();
+            _audioPlayerGameResult.PlaybackEnded += AudioPlayerGameResultOnPlaybackEnded;
+        }, Logging.CreateGameLogger());
     }
 
     private void AudioPlayerGameResultOnPlaybackEnded(object? sender, EventArgs e)
     {
+        if (_audioPlayerGameResult != null)
+        {
+            _audioPlayerGameResult.PlaybackEnded -= AudioPlayerGameResultOnPlaybackEnded;
+        }
+
         if (_isWordRecognized)
         {
             _audioPlayerCoins.Play();
         }
 
-        this.BackgroundImage.Source = ImageSource.FromFile("background_oachkatzlschwoaf_game.png");
-        _audioBackground.Play();
-        _audioBackground.Volume = 0.1;
+        var userSettings = AppUserSettings.Load();
+        InitializeGame(userSettings);
     }
 
     private void HomeButton_OnClicked(object? sender, EventArgs e)

@@ -50,21 +50,31 @@
                    Grid.Row="1"
                    Source="heart_transparent" HeightRequest="50" ></Image>
 
-            <Border  HeightRequest="60"
-                     WidthRequest="60"
-                     IsVisible="False"
-                     BackgroundColor="{StaticResource Primary}"
-                     Margin="10"
-                     x:Name="TalkNowBorder"
-                     VerticalOptions="End"
-                     HorizontalOptions="End"
+
+            <Grid 
+                VerticalOptions="End"
+                HorizontalOptions="End"
+                  Margin="10"
+                  x:Name="TalkNowBorder"
+                  IsVisible="False"
+                  HeightRequest="100"
+                  WidthRequest="100"
             >
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="25" />
-                </Border.StrokeShape>
-                <Image Grid.Row="1" HeightRequest="50" WidthRequest="50" Aspect="AspectFill" Source="icon_talk_now" />
-            </Border>
-            <ActivityIndicator x:Name="TalkNowActivityIndicator" IsRunning="False" HeightRequest="50" Color="Black"  />
+                <Border  HeightRequest="100"
+                         WidthRequest="100"
+             
+                         BackgroundColor="{StaticResource Quinary}"
+                         VerticalOptions="Start"
+                         HorizontalOptions="Start"
+                >
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="25" />
+                    </Border.StrokeShape>
+                    <Image HeightRequest="80" WidthRequest="100" Aspect="AspectFill" Source="icon_microfone" />
+                </Border>
+                <ActivityIndicator IsRunning="True" HeightRequest="100" Color="#5F3C02"  />
+            </Grid>
+
         </VerticalStackLayout>
         
         
@@ -95,7 +105,7 @@
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="25" />
                 </Border.StrokeShape>
-                <ImageButton Source="icon_talk" HeightRequest="80" Clicked="TalkToSepp_OnClicked" />
+                <ImageButton Source="icon_talk_to_sepp" HeightRequest="80" Clicked="TalkToSepp_OnClicked" />
             </Border>
 
 
@@ -122,20 +132,6 @@
                 </Border.StrokeShape>
                 <ImageButton Source="icon_oachkatzlschwoaf_game" HeightRequest="80" Clicked="OchkatzlschwafGameButton_OnClicked" />
             </Border>
-            <Border  HeightRequest="80"
-                     WidthRequest="80"
-                     BackgroundColor="#604F3F"
-                     Margin="5"
-                     x:Name="HomeButtonBorder"
-            >
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="25" />
-                </Border.StrokeShape>
-                <ImageButton Source="icon_home" HeightRequest="80" Clicked="HomeButton_OnClicked" />
-            </Border>
-
-
-
         </VerticalStackLayout>
 
         <Grid Grid.Row="2" Grid.RowDefinitions="Auto, *"
@@ -161,26 +157,40 @@
         </Grid>
         
         <HorizontalStackLayout Grid.Row="2" VerticalOptions="End" HorizontalOptions="Start" Margin="0">
-            <Border  HeightRequest="60"
-                     WidthRequest="60"
-                     BackgroundColor="#604F3F"
-                     Margin="5"
-            >
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="15" />
-                </Border.StrokeShape>
-                <ImageButton Margin="0" Source="icon_dataprivacy.png" Clicked="ImprintButton_OnClicked" />
+            
+           
+            <Border Style="{StaticResource FooterMenuBorder}"
+                    
+                    >
+                <HorizontalStackLayout>
+                    <Border  HeightRequest="50"
+                             WidthRequest="50"
+                             BackgroundColor="Transparent"
+                             Margin="5"
+                    >
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="15" />
+                        </Border.StrokeShape>
+                        <ImageButton Source="icon_imprint.png" Clicked="ImprintButton_OnClicked" />
+                    </Border>
+                    <Border  HeightRequest="50"
+                             WidthRequest="50"
+                             BackgroundColor="Transparent"
+                             Margin="5"
+                    >
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="15" />
+                        </Border.StrokeShape>
+                        <ImageButton Source="icon_dataprivacy.png" Clicked="DataPrivacyButton_OnClicked" />
+                    </Border>
+                    
+                    <ImageButton Margin="15,5,5,5" Source="social_media_icon_facebook" HeightRequest="40" WidthRequest="40" Aspect="AspectFit" Clicked="FacebookButtonOnClicked"></ImageButton>
+                    <ImageButton Margin="5" Source="social_media_icon_instagram" HeightRequest="40" WidthRequest="40" Aspect="AspectFit" Clicked="InstagramButtonOnClicked"></ImageButton>
+                    <ImageButton Margin="5" Source="social_media_icon_youtube" HeightRequest="80" WidthRequest="80" Aspect="AspectFit" Clicked="YoutubeButtonOnClicked"></ImageButton>
+                    <ImageButton Margin="5" Source="social_media_icon_tiktok" HeightRequest="40" WidthRequest="40" Aspect="AspectFit" Clicked="TikTokButtonOnClicked"></ImageButton>
+                </HorizontalStackLayout>
             </Border>
-            <Border  HeightRequest="60"
-                     WidthRequest="60"
-                     BackgroundColor="#604F3F"
-                     Margin="5"
-            >
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="15" />
-                </Border.StrokeShape>
-                <ImageButton Source="icon_imprint.png" Clicked="DataPrivacyButton_OnClicked" />
-            </Border>
+            
         </HorizontalStackLayout>
         <Button BackgroundColor="Black" 
                 Grid.RowSpan="3" Opacity="1" 

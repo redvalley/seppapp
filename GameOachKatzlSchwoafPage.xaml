@@ -19,28 +19,29 @@
         </Border>
         
         
-        <VerticalStackLayout Grid.Row="0"
+        <Grid Grid.Row="0"
                              VerticalOptions="Start"
                              HorizontalOptions="Start"
-                             Margin="5,20,0,5"
+                             Margin="20,100,0,5"
                              x:Name="TalkNowBorder"
                              IsVisible="False"
+                             HeightRequest="100"
+                             WidthRequest="100"
                              >
-            <Border  HeightRequest="60"
-                     WidthRequest="60"
+            <Border  HeightRequest="100"
+                     WidthRequest="100"
                      
-                     BackgroundColor="{StaticResource Primary}"
-                     Margin="10"
+                     BackgroundColor="{StaticResource Quinary}"
                      VerticalOptions="Start"
                      HorizontalOptions="Start"
             >
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="25" />
                 </Border.StrokeShape>
-                <Image HeightRequest="50" WidthRequest="50" Aspect="AspectFill" Source="icon_talk_now" />
+                <Image HeightRequest="80" WidthRequest="100" Aspect="AspectFill" Source="icon_microfone" />
             </Border>
-            <ActivityIndicator IsRunning="True" HeightRequest="50" Color="Black"  />
-        </VerticalStackLayout>
+            <ActivityIndicator IsRunning="True" HeightRequest="100" Color="#5F3C02"  />
+        </Grid>
         
         
         

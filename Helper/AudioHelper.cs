@@ -1,6 +1,6 @@
 ﻿using Plugin.Maui.Audio;
 
-namespace SeppApp;
+namespace SeppApp.Helper;
 
 public static class AudioHelper
 {

@@ -11,6 +11,8 @@
 
     <Style TargetType="StackLayout">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Quinary}, Dark={StaticResource Quinary}}" />
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
     </Style>
 
     <Style TargetType="Border">
@@ -18,6 +20,15 @@
         <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Quinary}, Dark={StaticResource Quinary}}" />
         <Setter Property="StrokeShape" Value="RoundRectangle 30"/>
         <Setter Property="StrokeThickness" Value="0"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="FooterMenuBorder">
+        <Setter Property="StrokeShape" Value="RoundRectangle 30"/>
+        <Setter Property="Margin" Value="10,5"/>
+        <Setter Property="HeightRequest" Value="60"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Quinary}, Dark={StaticResource Quinary}}" />
     </Style>
 
     <Style TargetType="Border" x:Key="EntryBorder">
@@ -36,12 +47,7 @@
         <Setter Property="VerticalOptions" Value="Start"/>
     </Style>
 
-    <Style TargetType="Border" x:Key="FooterMenuBorder">
-        <Setter Property="StrokeShape" Value="RoundRectangle 30"/>
-        <Setter Property="Margin" Value="20, 5, 20, 5"/>
-        <Setter Property="HeightRequest" Value="60"/>
-        <Setter Property="VerticalOptions" Value="Center"/>
-    </Style>
+    
 
     <Style TargetType="Border" x:Key="FooterGameControlsBorder">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Quinary}, Dark={StaticResource Quinary}}" />

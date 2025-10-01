@@ -35,4 +35,12 @@ public static class AppSettings
     public static string AdMobAdUnitIdInterstitial = "ca-app-pub-6864374918270893/2029859707";
 #endif
 #endif
+
+    public const string SocialMediaUrlFacebook = "https://www.facebook.com/profile.php?id=61578104993770";
+
+    public const string SocialMediaUrlInstagram = "https://www.instagram.com/red_valley_software/";
+
+    public const string SocialMediaUrlYoutube= "https://www.youtube.com/@RedValleySoftware";
+
+    public const string SocialMediaUrlTikTok = "https://www.tiktok.com/@redvalley_software";
 }

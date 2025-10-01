@@ -56,13 +56,7 @@ public class SpeechToTextService : ISpeechToTextService
 
             _recognizedText = string.Empty;
             _recognitionDoneHandler = recognitionDone;
-            var currentMaxListenTimeMilliSeconds = maxListenTimeMilliSeconds;
 #if IOS
-            if (currentMaxListenTimeMilliSeconds == null)
-            {
-                currentMaxListenTimeMilliSeconds = DefaultMaxListenTimeMilliSeconds;
-            }
-
             _speechToText.RecognitionResultUpdated -= OnSpeechToTextOnRecognitionResultUpdated;
             _speechToText.RecognitionResultUpdated += OnSpeechToTextOnRecognitionResultUpdated;
 #else
@@ -82,10 +76,11 @@ public class SpeechToTextService : ISpeechToTextService
             }
             );
 
+            
 
-            if (currentMaxListenTimeMilliSeconds != null)
+            if (maxListenTimeMilliSeconds != null)
             {
-                await Task.Delay(currentMaxListenTimeMilliSeconds.Value);
+                await Task.Delay(maxListenTimeMilliSeconds.Value);
                 await _speechToText.StopListenAsync();
                 _speechToText.RecognitionResultUpdated -= OnSpeechToTextOnRecognitionResultUpdated;
 
@@ -93,7 +88,6 @@ public class SpeechToTextService : ISpeechToTextService
             }
         }, Logging.CreateCoreLogger());
     }
-
 
     private void OnSpeechToTextOnRecognitionResultCompleted(object? sender,
         SpeechToTextRecognitionResultCompletedEventArgs e)

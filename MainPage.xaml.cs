@@ -25,7 +25,10 @@ namespace SeppApp
         private bool _isPageActive = false;
         private IDispatcherTimer _heartMinusDispatcher;
         public bool IsInterstitualAdShowing { get; set; }
-
+        private bool _lastCallWeisswurst = false;
+        private bool _seppIsWegWeisswurst = false;
+        private bool _seppMechtWegWeisswurst = false;
+        private bool _wrongFeelingFulFilled = false;
 
         private List<string> _characterAnimationTalkingImageList =
         [
@@ -58,7 +61,7 @@ namespace SeppApp
         private List<string> _currentcharacterAnimationImageList = new List<string>();
 
         private int _currentAnimationImageIndex = 0;
-        private IAudioPlayer _audioPlayerPfuiDeifeSound;
+
         private IAudioPlayer _audioPlayerIntroSound;
         private IAudioPlayer _audioPlayerSchnarchen;
         private IAudioPlayer _audioPlayerThirsty;
@@ -76,6 +79,10 @@ namespace SeppApp
 
         private List<IAudioPlayer> _audioPlayerTalking = new List<IAudioPlayer>();
 
+        private List<IAudioPlayer> _audioPlayerWeisswurstMitKetchup = new List<IAudioPlayer>();
+
+        private IAudioPlayer _audioPlayerWeisswurstMitKetchupLastCall;
+        private IAudioPlayer? _audioPlayerWeisswurstMitKetchupCurrent;
 
         private List<CharacterFeelings> _characterFeelings = [CharacterFeelings.Hungry, CharacterFeelings.Thirsty, CharacterFeelings.Bored];
 
@@ -85,6 +92,8 @@ namespace SeppApp
 
         private readonly Random _random = new();
         private Task _lmGenerationTask;
+        private IAudioPlayer _audioPlayerWeisswurstMitKetchupSeppWeg;
+        private IAudioPlayer? _seppTalkingCurrent;
 
 
         private const long DefaultAnimiationInterval = 150;
@@ -115,6 +124,11 @@ namespace SeppApp
         private void ChangeFeeling()
         {
             _characterFeeling = GetRandomEntry(_characterFeelings);
+            ShowAndTalkFeeling();
+        }
+
+        private void ShowAndTalkFeeling()
+        {
             switch (_characterFeeling)
             {
                 case CharacterFeelings.Thirsty:
@@ -154,6 +168,20 @@ namespace SeppApp
             return list[_random.Next(list.Count)];
         }
 
+        public TEntry GetNextEntry<TEntry>(IEnumerable<TEntry> listEntries, TEntry? currentEntry)
+        {
+            var list = listEntries.ToList();
+
+            if (currentEntry == null ||
+                list.IndexOf(currentEntry) == list.Count - 1)
+            {
+                return list.First();
+            }
+
+            return list[list.IndexOf(currentEntry) + 1];
+        }
+
+
         private void InitializeSound()
         {
             _audioPlayerGreeting.Add(CreateAudioPlayer("servus.mp3"));
@@ -163,7 +191,6 @@ namespace SeppApp
             _audioPlayerNotUnderstand.Add(CreateAudioPlayer("woos.mp3"));
             _audioPlayerNotUnderstand.Add(CreateAudioPlayer("iverstehnix.mp3"));
 
-            _audioPlayerPfuiDeifeSound = CreateAudioPlayer("pfuideife.mp3");
             _audioPlayerIntroSound = CreateAudioPlayer("intro.mp3");
 
             _audioPlayerSchnarchen = CreateAudioPlayer("schnarchen.mp3");
@@ -179,13 +206,40 @@ namespace SeppApp
             _audioPlayerNo = CreateAudioPlayer("naaa.mp3");
             _audioPlayerThanks = CreateAudioPlayer("merce.mp3");
 
-            _audioPlayerHowAreYouAnswer.Add(CreateAudioPlayer("bastscho.mp3"));
+            _audioPlayerHowAreYouAnswer.Add(CreateAudioPlayer("sepp_says_bastscho.mp3"));
             _audioPlayerHowAreYouAnswer.Add(CreateAudioPlayer("guadunssaiba.mp3"));
 
-            _audioPlayerTalking.Add(CreateAudioPlayer("gschmeidigbleim.mp3"));
-            _audioPlayerTalking.Add(CreateAudioPlayer("desbasdscho.mp3"));
-            _audioPlayerTalking.Add(CreateAudioPlayer("bluadszacke.mp3"));
-            _audioPlayerTalking.Add(CreateAudioPlayer("birnbacherl.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_a_bissl_wos.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_back_mas.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_bastscho.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_birnbacherl.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_bluadszacke.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_des_is_a_gmade_wisn.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_desbasdscho.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_es_gibt_nix_bessers.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_gschmeidigbleim.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_hau_di_hera.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_ja_do_legst_di_nida.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_oans_zwoa_gsuffa.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_schau_ma_moi.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_scheiss_da_nix.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_sepp_sei_app.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_wennd_wurst.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_wer_ko.mp3"));
+            _audioPlayerTalking.Add(CreateAudioPlayer("sepp_says_wia_d_sau.mp3"));
+
+
+
+            _audioPlayerWeisswurstMitKetchup.Add(CreateAudioPlayer("weiss_wurscht_mit_ketchup_verbrecha.mp3"));
+            _audioPlayerWeisswurstMitKetchup.Add(CreateAudioPlayer("weiss_wurscht_mit_ketchup_vergiss_i_mi.mp3"));
+            _audioPlayerWeisswurstMitKetchup.Add(CreateAudioPlayer("weiss_wurscht_mit_ketchup_maibam.mp3"));
+            _audioPlayerWeisswurstMitKetchup.Add(CreateAudioPlayer("weiss_wurscht_mit_ketchup_brennt_da_huad.mp3"));
+            _audioPlayerWeisswurstMitKetchup.Add(CreateAudioPlayer("weiss_wurscht_mit_ketchup_meng_dua_i_ned.mp3"));
+            _audioPlayerWeisswurstMitKetchup.Add(CreateAudioPlayer("weiss_wurscht_mit_ketchup_schleich_di.mp3"));
+            _audioPlayerWeisswurstMitKetchup.Add(CreateAudioPlayer("weiss_wurscht_mit_ketchup_pfuideife.mp3"));
+
+            _audioPlayerWeisswurstMitKetchupLastCall = CreateAudioPlayer("weiss_wurscht_mit_ketchup_birschal.mp3");
+            _audioPlayerWeisswurstMitKetchupSeppWeg = CreateAudioPlayer("weiss_wurscht_mit_ketchup_sepp_is_weg.mp3");
 
 
             _audioPlayerDrinking = CreateAudioPlayer("drinking.mp3");
@@ -221,30 +275,31 @@ namespace SeppApp
             }
             StopCharacterSleeping();
             DebounceCharacterFeelings();
-            LetSeppSpeak(
-                GetRandomEntry(_audioPlayerTalking));
+
+            _seppTalkingCurrent = GetNextEntry(_audioPlayerTalking, _seppTalkingCurrent);
+
+            LetSeppSpeak(_seppTalkingCurrent);
             DebounceCharacterFeelings();
 
         }
 
         private async Task StartListening()
         {
+            CharacterImage.IsVisible = true;
             TalkNowBorder.IsVisible = true;
-            TalkNowActivityIndicator.IsVisible = true;
-            TalkNowActivityIndicator.IsRunning = true;
+            CharacterImage.Source = ImageSource.FromFile("sepp_listening");
+
             await _speechToTextService.StartListeningAsync(CancellationToken.None, recognizedText =>
             {
                 TalkNowBorder.IsVisible = false;
-                TalkNowActivityIndicator.IsVisible = false;
-                TalkNowActivityIndicator.IsRunning = false;
+
                 RecognizeTextAndReplay(recognizedText);
             }, async () =>
             {
                 TalkNowBorder.IsVisible = false;
-                TalkNowActivityIndicator.IsVisible = false;
-                TalkNowActivityIndicator.IsRunning = false;
                 await Toast.Make(Properties.Resources.ToastErrorMicrophoneAccessMissing).Show(CancellationToken.None);
-            }, " ");
+            }, " ", SpeechToTextService.DefaultMaxListenTimeMilliSeconds);
+
         }
 
         private void RecognizeTextAndReplay(string recognizedText)
@@ -253,6 +308,7 @@ namespace SeppApp
 
             if (recognizedText.IsEmpty())
             {
+                CharacterImage.Source = ImageSource.FromFile("sepp_transparent_1");
                 return;
             }
 
@@ -303,6 +359,8 @@ namespace SeppApp
 
         private void LetSeppDoSomething(IAudioPlayer player, List<string> imageList)
         {
+            CharacterImage.IsVisible = true;
+
             if (!_isPageActive)
             {
                 return;
@@ -326,12 +384,21 @@ namespace SeppApp
             {
                 currentAudioPlayer.PlaybackEnded -= LetSeppDoSomethingPlayerOnPlaybackEnded;
             }
+
+            CharacterImage.IsVisible = true;
             DebounceCharacterFeelings();
             CharacterImage.Source = ImageSource.FromFile("sepp_transparent_1");
             _characterAnimationTimer.Stop();
             _characterIsBusy = false;
             _characterAnimationTimer.Interval = TimeSpan.FromMilliseconds(DefaultAnimiationInterval);
             _currentAnimationImageIndex = 0;
+
+            if (_wrongFeelingFulFilled)
+            {
+                _wrongFeelingFulFilled = false;
+                ShowAndTalkFeeling();
+            }
+
         }
 
 
@@ -396,18 +463,70 @@ namespace SeppApp
 
             if (BuyItem(ItemPrices.WeißwurstMitKetchupPrice))
             {
+                CharacterHeartRegenerate();
+
                 CharacterImage.Source = ImageSource.FromFile("sepp_grantig");
                 await Task.Delay(2000);
-                LetSeppSpeak(_audioPlayerPfuiDeifeSound);
-                _audioPlayerPfuiDeifeSound.PlaybackEnded += (o, args) =>
+
+
+                if (_seppMechtWegWeisswurst)
                 {
-                    CharacterImage.Source = ImageSource.FromFile("sepp_transparent_1");
-                };
+                    _audioPlayerWeisswurstMitKetchupCurrent = _audioPlayerWeisswurstMitKetchupSeppWeg;
+                    _seppIsWegWeisswurst = true;
+                    _seppMechtWegWeisswurst = false;
+                }
+                else if (_lastCallWeisswurst)
+                {
+                    _audioPlayerWeisswurstMitKetchupCurrent = _audioPlayerWeisswurstMitKetchupLastCall;
+                    _lastCallWeisswurst = false;
+                    _seppMechtWegWeisswurst = true;
+                }
+                else
+                {
+                    _audioPlayerWeisswurstMitKetchupCurrent = GetNextEntry(_audioPlayerWeisswurstMitKetchup,
+                        _audioPlayerWeisswurstMitKetchupCurrent);
+                }
+
+                    
+
+                if (_audioPlayerWeisswurstMitKetchupCurrent == _audioPlayerWeisswurstMitKetchup.Last())
+                {
+                    _lastCallWeisswurst = true;
+                }
+
+
+
+                LetSeppSpeak(_audioPlayerWeisswurstMitKetchupCurrent);
+
+                _audioPlayerWeisswurstMitKetchupCurrent.PlaybackEnded += AudioPlayerWeisswurstMitKetchupPlaybackEnded;
+
             }
+        }
+
+        private void AudioPlayerWeisswurstMitKetchupPlaybackEnded(object? sender, EventArgs e)
+        {
+            if (_audioPlayerWeisswurstMitKetchupCurrent != null)
+            {
+                _audioPlayerWeisswurstMitKetchupCurrent.PlaybackEnded -= AudioPlayerWeisswurstMitKetchupPlaybackEnded;
+            }
+
+            if (_seppIsWegWeisswurst)
+            {
+                CharacterImage.IsVisible = false;
+                _seppIsWegWeisswurst = false;
+            }
+            else
+            {
+                CharacterImage.Source = ImageSource.FromFile("sepp_transparent_1");
+            }
+
+                
         }
 
         private void Leberkaese_Clicked(object? sender, EventArgs e)
         {
+            _wrongFeelingFulFilled = false;
+
             if (_characterIsBusy)
             {
                 return;
@@ -424,6 +543,7 @@ namespace SeppApp
             }
             else
             {
+                _wrongFeelingFulFilled = true;
                 DebounceCharacterFeelings();
                 LetSeppSpeak(_audioPlayerNo);
             }
@@ -441,6 +561,7 @@ namespace SeppApp
 
         private void Limo_OnClicked(object? sender, EventArgs e)
         {
+            _wrongFeelingFulFilled = false;
             if (_characterIsBusy)
             {
                 return;
@@ -458,6 +579,7 @@ namespace SeppApp
             }
             else
             {
+                _wrongFeelingFulFilled = true;
                 DebounceCharacterFeelings();
                 LetSeppSpeak(_audioPlayerNo);
             }
@@ -526,7 +648,6 @@ namespace SeppApp
         private async void FadeInBorder_OnClicked(object? sender, EventArgs e)
         {
             await FadeInScene();
-            StopCharacterSleeping();
         }
 
         private void StopCharacterSleeping()
@@ -536,7 +657,7 @@ namespace SeppApp
             {
                 _audioPlayerSchnarchen.Stop();
                 _characterState = CharacterStates.Awake;
-                FeelingBubbleImage.IsVisible = false;
+                FeelingBubbleImage.IsVisible = true;
             }
 
         }
@@ -557,12 +678,11 @@ namespace SeppApp
 
             ChangeBuyableItemsState(userSettings);
             _heartMinusDispatcher.Start();
-            
+
             this.CoinLabel.Text = userSettings.Coins.ToString();
             DebounceCharacterFeelings();
             StopCharacterSleeping();
             CharacterHeartRegenerate();
-            HomeButtonBorder.IsVisible = false;
             _audioBackground.Volume = 0.5;
 
             _characterFeelingsDebounceDispatcher.Debounce(() => { });
@@ -596,28 +716,6 @@ namespace SeppApp
                 GetRandomEntry(_audioPlayerGreeting));
             DebounceCharacterFeelings();
             _audioPlayerIntroSound.PlaybackEnded -= AudioPlayerIntroSoundOnPlaybackEnded;
-        }
-
-        private async void HomeButton_OnClicked(object? sender, EventArgs e)
-        {
-            HomeButtonBorder.IsVisible = false;
-            OchkatzlSchwoafGameBorder.IsVisible = true;
-            await ChangeScene("background_wiese.png", "background_sound_wiese.mp3");
-        }
-
-        private async Task ChangeScene(string backgroundImage, string? backgroundSound)
-        {
-            BackgroundImage.Source = backgroundImage;
-            await ChangeScene();
-
-            if (backgroundSound != null)
-            {
-                _audioBackground = CreateAudioPlayer(backgroundSound);
-                _audioBackground.Loop = true;
-                _audioBackground.Play();
-            }
-
-            LetSeppSpeak(GetRandomEntry(_audioPlayerGreeting));
         }
 
         private async Task ChangeScene()
@@ -656,7 +754,7 @@ namespace SeppApp
                     IsInterstitualAdShowing = false;
                 });
             }
-            
+
             await this.Navigation.PushAsync(Resolver.Resolve<GameOachKatzlSchwoafPage>());
         }
 
@@ -681,6 +779,7 @@ namespace SeppApp
             _isPageActive = false;
             _heartMinusDispatcher.Stop();
             OchkatzlSchwoafGameBorder.IsVisible = false;
+            _audioPlayerIntroSound.Stop();
             _audioBackground.Stop();
             this._characterFeelingsDebounceDispatcher.Debounce(() => { });
         }
@@ -715,7 +814,26 @@ namespace SeppApp
             }
         }
 
-        
+
+        private async void FacebookButtonOnClicked(object? sender, EventArgs e)
+        {
+            await Launcher.OpenAsync(AppSettings.SocialMediaUrlFacebook);
+        }
+
+        private async void InstagramButtonOnClicked(object? sender, EventArgs e)
+        {
+            await Launcher.OpenAsync(AppSettings.SocialMediaUrlInstagram);
+        }
+
+        private async void YoutubeButtonOnClicked(object? sender, EventArgs e)
+        {
+            await Launcher.OpenAsync(AppSettings.SocialMediaUrlYoutube);
+        }
+
+        private async void TikTokButtonOnClicked(object? sender, EventArgs e)
+        {
+            await Launcher.OpenAsync(AppSettings.SocialMediaUrlTikTok);
+        }
     }
 
 }
