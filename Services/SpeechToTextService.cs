@@ -15,6 +15,7 @@ public class SpeechToTextService : ISpeechToTextService
     private Action<string>? _recognitionDoneHandler;
     public const int DefaultMaxListenTimeMilliSeconds = 5000;
     private string _defaultWordSeperator = string.Empty;
+    private bool _isRecognitionRunning = false;
 
     public SpeechToTextService(ISpeechToText speechToText)
     {
@@ -44,7 +45,12 @@ public class SpeechToTextService : ISpeechToTextService
     {
         await ExceptionHelper.TryAsync("SpeechToTextService.StartListeningAsync", async () =>
         {
+            if (_isRecognitionRunning)
+            {
+                return;
+            }
 
+            _isRecognitionRunning = true;
             var isGranted = await _speechToText.RequestPermissions(cancellationToken);
             if (!isGranted)
             {
@@ -82,9 +88,14 @@ public class SpeechToTextService : ISpeechToTextService
             {
                 await Task.Delay(maxListenTimeMilliSeconds.Value);
                 await _speechToText.StopListenAsync();
+                
                 _speechToText.RecognitionResultUpdated -= OnSpeechToTextOnRecognitionResultUpdated;
-
-                _recognitionDoneHandler?.Invoke(_recognizedText);
+                if (_isRecognitionRunning)
+                {
+                    _recognitionDoneHandler?.Invoke(_recognizedText);
+                }
+                
+                _isRecognitionRunning = false;
             }
         }, Logging.CreateCoreLogger());
     }
@@ -92,6 +103,7 @@ public class SpeechToTextService : ISpeechToTextService
     private void OnSpeechToTextOnRecognitionResultCompleted(object? sender,
         SpeechToTextRecognitionResultCompletedEventArgs e)
     {
+        _isRecognitionRunning = false;
 #if !IOS
         _speechToText.RecognitionResultCompleted -= OnSpeechToTextOnRecognitionResultCompleted;
         if (e.RecognitionResult?.Text?.IsNotEmpty()??false)
